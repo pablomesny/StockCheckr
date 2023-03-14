@@ -4,4 +4,11 @@
     padding: 0;
     margin: 0;
     border-spacing: 0;
+    font-family: 'Roboto';
+}
+
+.navbar-logo {
+    object-fit: contain;
+    max-width: 180px;
+    margin-right: 2rem;
 }

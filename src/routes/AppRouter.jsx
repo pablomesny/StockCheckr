@@ -1,10 +1,15 @@
 import { Route, Routes } from "react-router-dom"
-import { LoginPage } from "../auth/pages/LoginPage"
+import { LoginPage } from "../pages"
+import { NavBar } from '../components';
 
 export const AppRouter = () => {
   return (
-    <Routes>
-      <Route path="/*" element={ <LoginPage /> } />
-    </Routes>
+    <>
+      <NavBar />
+      
+      <Routes>
+        <Route path="/*" element={ <LoginPage /> } />
+      </Routes>
+    </>
   )
 }
