@@ -1,14 +1,19 @@
 import { Route, Routes } from "react-router-dom"
-import { LoginPage } from "../pages"
-import { NavBar } from '../components';
+import { DashboardPage, LoginPage } from "../pages"
+import { Navbar } from '../components';
+import { ControlPanelPage } from "../pages/ControlPanelPage";
 
 export const AppRouter = () => {
   return (
     <>
-      <NavBar />
-      
+      <Navbar />
+
       <Routes>
+        
         <Route path="/*" element={ <LoginPage /> } />
+        <Route path="/dashboard" element={ <DashboardPage /> } />
+        <Route path="/panel" element={ <ControlPanelPage /> } />
+
       </Routes>
     </>
   )
