@@ -3,44 +3,37 @@ import { Box, Container, Divider, Drawer, IconButton, List, ListItemButton, List
 import { CloseRounded } from "@mui/icons-material";
 
 export const NavbarDrawer = ({ isOpen, handleToggleDrawer }) => {
-
-  const [ selectedIndex, setSelectedIndex ] = useState();
-
   return (
     <Drawer
       open={ isOpen }
       anchor='left'
     >
-      <Box sx={{ width: '100vw', height: '100%', bgcolor: '#FAFAFA', zIndex: 1200 }}>
+      <Box sx={{ width: '100vw', height: '100%', bgcolor: '#0B3C5D', zIndex: 1200 }}>
         <List component='nav' aria-label='Menu items'>
 
           <Container sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
             <ListItemIcon>
-              <IconButton onClick={ handleToggleDrawer }>
-                <CloseRounded />
+              <IconButton sx={{ mb: 1 }} onClick={ handleToggleDrawer }>
+                <CloseRounded style={{ color: 'white' }} />
               </IconButton>
             </ListItemIcon>
           </Container>
 
-          <Divider />
+          <Divider color="#CCCCCC" variant="middle" />
 
-          <ListItemButton 
-            selected={ selectedIndex === 1 }
-            onClick={ () => setSelectedIndex( 1 ) }
+          <ListItemButton
+            sx={{ mt: 1 }}
           >
-            <ListItemText primary="Dashboard" sx={{ textAlign: 'center' }}/>
+            <ListItemText primary="Dashboard" primaryTypographyProps={{ style: { color: 'white' } }} sx={{ textAlign: 'center' }}/>
           </ListItemButton>
 
-          <ListItemButton 
-            selected={ selectedIndex === 2 }
-            onClick={ () => setSelectedIndex( 2 ) }
-          >
-            <ListItemText primary="Control panel" sx={{ textAlign: 'center' }} />
+          <ListItemButton>
+            <ListItemText primary="Control panel" primaryTypographyProps={{ style: { color: 'white' } }} sx={{ textAlign: 'center' }} />
           </ListItemButton>
 
 
           <ListItemButton>            
-            <ListItemText primary="Logout" sx={{ textAlign: 'center' }} />
+            <ListItemText primary="Logout" primaryTypographyProps={{ style: { color: 'white' } }} sx={{ textAlign: 'center' }} />
           </ListItemButton>
 
         </List>

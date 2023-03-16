@@ -82,7 +82,7 @@ export const LoginForm = ({ handleChangeForm }) => {
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button variant="contained">
-                        Login
+                            Login
                         </Button>
                     </Grid>
 
@@ -91,7 +91,7 @@ export const LoginForm = ({ handleChangeForm }) => {
                             variant="outlined"
                             onClick={ handleChangeForm }
                         >
-                        Register
+                            Register
                         </Button>
                     </Grid>
                 </Grid>
