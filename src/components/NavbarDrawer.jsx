@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Container, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { ChevronLeft } from "@mui/icons-material";
+import { CloseRounded } from "@mui/icons-material";
 
 export const NavbarDrawer = ({ isOpen, handleToggleDrawer }) => {
 
@@ -11,13 +11,13 @@ export const NavbarDrawer = ({ isOpen, handleToggleDrawer }) => {
       open={ isOpen }
       anchor='left'
     >
-      <Box sx={{ width: '100vw', height: '100%', bgcolor: '#8FB8DE', zIndex: 1200 }}>
+      <Box sx={{ width: '100vw', height: '100%', bgcolor: '#FAFAFA', zIndex: 1200 }}>
         <List component='nav' aria-label='Menu items'>
 
           <Container sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end' }}>
             <ListItemIcon>
               <IconButton onClick={ handleToggleDrawer }>
-                <ChevronLeft />
+                <CloseRounded />
               </IconButton>
             </ListItemIcon>
           </Container>
