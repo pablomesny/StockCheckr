@@ -1,26 +1,7 @@
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
-import { useState } from "react";
 
-export const LoginForm = ({ handleChangeForm }) => {
-
-    const [ formData, setFormData ] = useState({
-        email: '',
-        password: ''
-      });
-    
-    const [ isSecured ,setIsSecured ] = useState(true);
-
-    const { email, password } = formData;
-
-    const onInputChange = ({ target }) => {
-        const { name, value } = target;
-        setFormData({
-            ...formData,
-            [ name ]: value
-        })
-    }
-
+export const RegisterForm = ({ handleChangeForm }) => {
   return (
     <Grid item xs={ 12 } md={ 5 } sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Grid container sx={{ justifyContent: 'center', bgcolor: '#8FB8DE', width: 'fit-content', borderRadius: '5px' }}>
@@ -31,7 +12,7 @@ export const LoginForm = ({ handleChangeForm }) => {
                     color="inherit"
                     sx={{ textAlign: 'center' }}
                 >
-                    Login
+                    Register
                 </Typography>
             </Grid>
 
@@ -46,8 +27,8 @@ export const LoginForm = ({ handleChangeForm }) => {
                     type="email"
                     placeholder="your@email.com"
                     name="email"
-                    value={ email }
-                    onChange={ onInputChange }
+                    //   value={ email }
+                    //   onChange={ onInputChange }
                     />
                 </Grid>
 
@@ -57,7 +38,7 @@ export const LoginForm = ({ handleChangeForm }) => {
                     variant="standard"
                     required
                     fullWidth
-                    InputProps={{
+                    /* InputProps={{
                         endAdornment: (
                         <InputAdornment position="end">
                             <IconButton 
@@ -69,13 +50,13 @@ export const LoginForm = ({ handleChangeForm }) => {
                             </IconButton>
                         </InputAdornment>
                         )
-                    }}
+                    }} */
                     label="Password"
-                    type={ isSecured ? "password" : "text" }
+                    //   type={ isSecured ? "password" : "text" }
                     placeholder="Password"
                     name="password"
-                    value={ password }
-                    onChange={ onInputChange }
+                    //   value={ password }
+                    //   onChange={ onInputChange }
                     />
                 </Grid>
 
@@ -91,7 +72,7 @@ export const LoginForm = ({ handleChangeForm }) => {
                             variant="outlined"
                             onClick={ handleChangeForm }
                         >
-                        Register
+                        Create account
                         </Button>
                     </Grid>
                 </Grid>

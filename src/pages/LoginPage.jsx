@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
-import { FullScreenLogo, LoginForm } from "../components";
+import { FullScreenLogo, LoginForm, RegisterForm } from "../components";
 
 export const LoginPage = () => {
 
@@ -34,8 +34,11 @@ export const LoginPage = () => {
                 </Grid>
 
                 {
-                  isUserRegistered &&
-                    <LoginForm handleChangeForm={ handleChangeForm } />
+                  isUserRegistered
+
+                    ? <LoginForm handleChangeForm={ handleChangeForm } />
+
+                    : <RegisterForm handleChangeForm={ handleChangeForm } />
                 }
                 
               </Grid>
