@@ -18,6 +18,14 @@ body {
     margin-right: 2rem;
 }
 
+.login-form {
+    width: 80%;
+}
+
+.login-logo {
+    max-width: 100%;
+}
+
 @media screen and (max-width: 900px) {
 
     .navbar-logo-container {

@@ -6,14 +6,14 @@ import { ControlPanelPage } from "../pages/ControlPanelPage";
 export const AppRouter = () => {
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
 
-      <Submenu />
+      {/* <Submenu /> */}
 
       <Routes>
         
-        <Route path="/*" element={ <LoginPage /> } />
-        <Route path="/dashboard" element={ <DashboardPage /> } />
+        <Route path="/login" element={ <LoginPage /> } />
+        <Route path="/*" element={ <DashboardPage /> } />
         <Route path="/panel" element={ <ControlPanelPage /> } />
 
       </Routes>
