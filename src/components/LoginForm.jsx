@@ -23,7 +23,7 @@ export const LoginForm = ({ handleChangeForm }) => {
 
   return (
     <Grid item xs={ 12 } md={ 5 } sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Grid container sx={{ justifyContent: 'center', bgcolor: '#8FB8DE', width: 'fit-content', borderRadius: '5px' }}>
+        <Grid container sx={{ justifyContent: 'center', bgcolor: '#FAFAFA', width: 'fit-content', borderRadius: '5px' }}>
             <Grid item xs={ 12 } sx={{ mt: 2 }}>
                 <Typography
                     variant="h4"
