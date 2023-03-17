@@ -5,8 +5,7 @@ import { useState } from "react"
 export const RegisterForm = ({ handleChangeForm }) => {
 
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
+        username: '',
         email: '',
         password: '',
         passwordCheck: ''
@@ -17,7 +16,7 @@ export const RegisterForm = ({ handleChangeForm }) => {
         passwordCheck: true
     });
 
-    const { firstName, lastName, email, password, passwordCheck } = formData;
+    const { username, email, password, passwordCheck } = formData;
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -48,26 +47,11 @@ export const RegisterForm = ({ handleChangeForm }) => {
                         variant="standard"
                         required
                         fullWidth
-                        label="First name"
+                        label="Username"
                         type="text"
-                        placeholder="First name"
-                        name="firstName"
-                        value={ firstName }
-                        onChange={ onInputChange }
-                    />
-                </Grid>
-
-                <Grid item xs={ 12 }>
-                    <TextField
-                        sx={{ mt: 2 }}
-                        variant="standard"
-                        required
-                        fullWidth
-                        label="Last name"
-                        type="text"
-                        placeholder="Last name"
-                        name="lastName"
-                        value={ lastName }
+                        placeholder="Username"
+                        name="username"
+                        value={ username }
                         onChange={ onInputChange }
                     />
                 </Grid>
