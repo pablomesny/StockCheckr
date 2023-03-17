@@ -1,4 +1,4 @@
-import { ContentCopyRounded, TurnedInRounded } from "@mui/icons-material"
+import { AttachMoneyRounded, ContentCopyRounded, TurnedInRounded } from "@mui/icons-material"
 import { Box, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
 
 export const Submenu = () => {
@@ -31,6 +31,13 @@ export const Submenu = () => {
             <ContentCopyRounded />
           </ListItemIcon>
           <ListItemText primary="Products" />
+        </ListItemButton>
+
+        <ListItemButton>
+          <ListItemIcon>
+            <AttachMoneyRounded />
+          </ListItemIcon>
+          <ListItemText primary="Sales" />
         </ListItemButton>
 
       </List>
