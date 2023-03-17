@@ -1,6 +1,6 @@
+import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
-import { useState } from "react"
 
 export const RegisterForm = ({ handleChangeForm }) => {
 
