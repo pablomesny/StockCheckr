@@ -29,12 +29,12 @@ export const RegisterForm = ({ handleChangeForm }) => {
 
   return (
     <Grid item xs={ 12 } md={ 5 } sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}  className="animate__animated animate__fadeIn">
-        <Grid container sx={{ justifyContent: 'center', bgcolor: '#FAFAFA', width: 'fit-content', borderRadius: '5px' }}>
+        <Grid container sx={{ justifyContent: 'center', bgcolor: '#FAFAFA', width: 'fit-content', borderRadius: '5px', marginX: 1 }}>
             <Grid item xs={ 12 } sx={{ mt: 2 }}>
                 <Typography
                     variant="h4"
                     component="h1"
-                    color="inherit"
+                    color="primary"
                     sx={{ textAlign: 'center' }}
                 >
                     Register
