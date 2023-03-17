@@ -28,8 +28,8 @@ export const LoginPage = () => {
 
           : (
             <Box sx={{ bgcolor: '#0B3C5D', height: '100vh', minWidth: '100%' }}>
-              <Grid container sx={{ height: '100%' }} className="animate__animated animate__fadeIn">
-                <Grid item xs={ 12 } md={ 7 } sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Grid container sx={{ height: '100%' }}>
+                <Grid item xs={ 12 } md={ 7 } sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }} className="animate__animated animate__fadeIn">
                   <img src="/src/assets/stockcheckr-login-logo.png" alt="brand logo" className="login-logo" />
                 </Grid>
 
