@@ -4,7 +4,7 @@ import { TableData } from "./TableData"
 export const Groups = () => {
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', bgcolor: '#E5E5E5' }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100%', bgcolor: '#E5E5E5' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 3, ml: 4, py: 2 }}>
             <Typography component="h2" variant="h5">
                 Control panel

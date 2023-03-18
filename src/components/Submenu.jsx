@@ -1,9 +1,13 @@
-import { AttachMoneyRounded, ContentCopyRounded, TurnedInRounded, WorkspacesOutlined } from "@mui/icons-material"
-import { Box, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material"
+import { useState } from "react";
+import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { AttachMoneyRounded, ContentCopyRounded, ControlPointRounded, ExpandLessRounded, ExpandMoreRounded, FormatListBulletedRounded, TurnedInRounded, WorkspacesOutlined } from "@mui/icons-material";
 
 export const Submenu = () => {
+
+  const [ isOpen, setIsOpen ] = useState( false );
+
   return (
-    <Box sx={{ width: '200px', height: 'calc( 100vh - 64px )', bgcolor: '#8FB8DE' }}>
+    <Box sx={{ width: '250px', minHeight: '100%', maxHeight: '100%', bgcolor: '#8FB8DE' }}>
       <List>
         <ListItemButton>
           <ListItemIcon>
@@ -40,12 +44,29 @@ export const Submenu = () => {
           <ListItemText primary="Products" />
         </ListItemButton>
 
-        <ListItemButton>
+        <ListItemButton onClick={ () => setIsOpen( prev => !prev ) }>
           <ListItemIcon>
             <AttachMoneyRounded />
           </ListItemIcon>
           <ListItemText primary="Sales" />
+          { isOpen ? <ExpandLessRounded /> : <ExpandMoreRounded /> }
         </ListItemButton>
+        <Collapse in={ isOpen } timeout="auto" unmountOnExit>
+          <List component="div" disablePadding>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <ControlPointRounded />
+              </ListItemIcon>
+              <ListItemText primary="Add sale" />
+            </ListItemButton>
+            <ListItemButton sx={{ pl: 4 }}>
+              <ListItemIcon>
+                <FormatListBulletedRounded />
+              </ListItemIcon>
+              <ListItemText primary="Manage sales" />
+            </ListItemButton>
+          </List>
+        </Collapse>
 
       </List>
     </Box>
