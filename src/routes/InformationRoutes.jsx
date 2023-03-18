@@ -9,7 +9,9 @@ export const InformationRoutes = () => {
     <>
       <Navbar />
 
-      <Box sx={{ display: 'flex', flexDirection: 'row', width: '100vw', minHeight: '100%' }}>
+      <Box 
+        sx={{ display: 'flex', flexDirection: 'row', width: '100vw', height: { xs: 'calc(100vh - 56px)', sm: 'calc(100vh - 64px)' } }}
+      >
         <Submenu />
 
         <Routes>
