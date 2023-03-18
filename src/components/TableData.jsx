@@ -9,6 +9,7 @@ import {
     Paper,
     tableCellClasses,
     TablePagination,
+    Box,
 } from '@mui/material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -45,7 +46,7 @@ const rows = [
 
 export const TableData = () => {
     return (
-        <>
+        <Box sx={{ mx: 2, mt: 2}}>
             <TableContainer component={ Paper }>
                 <Table aria-label="customized table">
                     <TableHead>
@@ -92,7 +93,7 @@ export const TableData = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            {/* <TablePagination
+            <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 // count={rows.length}
@@ -100,7 +101,7 @@ export const TableData = () => {
                 page={ 1 }
                 // onPageChange={handleChangePage}
                 // onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
-        </>
+            />
+        </Box>
     );
 };

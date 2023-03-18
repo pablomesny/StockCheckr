@@ -19,8 +19,8 @@ export const Groups = () => {
 
         <Divider variant="middle" />
 
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', margin: 2, padding: 2, bgcolor: '#FAFAFA', borderRadius: 1 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', bgcolor: '#FAFAFA', borderRadius: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: 2 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                     <Typography component="p" sx={{ fontSize: '1rem'}}>
                         Show
@@ -50,8 +50,8 @@ export const Groups = () => {
                 </Box>
             </Box>
 
-            <Divider variant="middle" sx={{ my: 2 }} />
-
+            <Divider variant="middle" />
+            
             <TableData />
         </Box>
     </Box>

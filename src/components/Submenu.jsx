@@ -3,7 +3,7 @@ import { Box, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/mate
 
 export const Submenu = () => {
   return (
-    <Box sx={{ width: '200px', height: 'calc( 100vh - 64px )', bgcolor: '#8FB8DE', borderRight: '1px solid black' }}>
+    <Box sx={{ width: '200px', height: 'calc( 100vh - 64px )', bgcolor: '#8FB8DE' }}>
       <List>
         <ListItemButton>
           <ListItemIcon>
@@ -16,14 +16,14 @@ export const Submenu = () => {
           <ListItemIcon>
             <TurnedInRounded />
           </ListItemIcon>
-          <ListItemText primary="Brand" />
+          <ListItemText primary="Brands" />
         </ListItemButton>
 
         <ListItemButton>
           <ListItemIcon>
             <ContentCopyRounded />
           </ListItemIcon>
-          <ListItemText primary="Category" />
+          <ListItemText primary="Categories" />
         </ListItemButton>
         
         <ListItemButton>
