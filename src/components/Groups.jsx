@@ -4,7 +4,7 @@ import { TableData } from "./TableData"
 export const Groups = () => {
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', minHeight: '100%', width: '100%', maxHeight: '100%', bgcolor: '#E5E5E5'}}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%', bgcolor: '#E5E5E5' }}>
         <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 3, ml: 4, py: 2 }}>
             <Typography component="h2" variant="h5">
                 Control panel
@@ -19,7 +19,7 @@ export const Groups = () => {
 
         <Divider variant="middle" />
 
-        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', bgcolor: '#FAFAFA', borderRadius: 1 }}>
+        <Box sx={{ display: 'flex', flex: 1, flexDirection: 'column', height: '100%', bgcolor: '#FAFAFA', borderRadius: 1, mx: 2, mb: 1 }}>
             <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', margin: 2 }}>
                 <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
                     <Typography component="p" sx={{ fontSize: '1rem'}}>
