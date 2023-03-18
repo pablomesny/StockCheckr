@@ -7,7 +7,7 @@ export const Submenu = () => {
   const [ isOpen, setIsOpen ] = useState( false );
 
   return (
-    <Box sx={{ width: '250px', minHeight: '100%', maxHeight: '100%', bgcolor: '#8FB8DE' }}>
+    <Box sx={{ width: '250px', height: '100%', bgcolor: '#8FB8DE' }}>
       <List>
         <ListItemButton>
           <ListItemIcon>
@@ -57,7 +57,7 @@ export const Submenu = () => {
               <ListItemIcon>
                 <ControlPointRounded />
               </ListItemIcon>
-              <ListItemText primary="Add sale" />
+              <ListItemText primary="Create sale" />
             </ListItemButton>
             <ListItemButton sx={{ pl: 4 }}>
               <ListItemIcon>

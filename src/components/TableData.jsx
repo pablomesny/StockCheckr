@@ -93,7 +93,7 @@ export const TableData = () => {
                     </TableBody>
                 </Table>
             </TableContainer>
-            <TablePagination
+            {/* <TablePagination
                 rowsPerPageOptions={[5, 10, 25]}
                 component="div"
                 // count={rows.length}
@@ -101,7 +101,7 @@ export const TableData = () => {
                 page={ 1 }
                 // onPageChange={handleChangePage}
                 // onRowsPerPageChange={handleChangeRowsPerPage}
-            />
+            /> */}
         </Box>
     );
 };

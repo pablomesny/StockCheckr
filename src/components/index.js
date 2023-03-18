@@ -4,5 +4,4 @@ export * from './Submenu';
 export * from './LoginForm';
 export * from './FullScreenLogo';
 export * from './RegisterForm';
-export * from './Groups';
 export * from './TableData';

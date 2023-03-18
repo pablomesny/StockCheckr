@@ -1,7 +1,7 @@
 import { Box, Button, Divider, TextField, Typography } from "@mui/material"
-import { TableData } from "./TableData"
+import { TableData } from "../components/TableData"
 
-export const Groups = () => {
+export const GroupsPage = () => {
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column', width: '100%', minHeight: '100%', bgcolor: '#E5E5E5' }}>
