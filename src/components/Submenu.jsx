@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Box, Collapse, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
-import { AttachMoneyRounded, ContentCopyRounded, ControlPointRounded, ExpandLessRounded, ExpandMoreRounded, FormatListBulletedRounded, TurnedInRounded, WorkspacesOutlined } from "@mui/icons-material";
+import { AttachMoneyRounded, ContentCopyRounded, ControlPointRounded, ExpandLessRounded, ExpandMoreRounded, FormatListBulletedRounded, TurnedInRounded, WorkspacesOutlined, WorkspacesRounded } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 export const Submenu = () => {
@@ -8,11 +8,11 @@ export const Submenu = () => {
   const [ isOpen, setIsOpen ] = useState( false );
 
   return (
-    <Box sx={{ width: '250px', height: '100%', bgcolor: '#8FB8DE' }}>
+    <Box sx={{ width: '100%', maxWidth: '220px', height: '100%', bgcolor: '#8FB8DE' }}>
       <List>
         <ListItemButton component={ Link } to="/panel/groups">
           <ListItemIcon>
-            <WorkspacesOutlined />
+            <WorkspacesRounded />
           </ListItemIcon>
           <ListItemText primary="Groups" />
         </ListItemButton>
