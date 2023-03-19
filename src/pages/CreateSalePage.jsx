@@ -1,5 +1,122 @@
+import { useEffect, useState } from "react";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+
 export const CreateSalePage = () => {
+
+  const [ date, setDate ] = useState( null );
+  const [ formData, setFormData ] = useState({
+    customerName: '',
+    customerPhoneNumber: '',
+  });
+
+  useEffect(() => {
+    const currentDate = new Date();
+    const dateString = currentDate.toLocaleDateString();
+    const timeString = currentDate.toLocaleTimeString();
+    setDate( `${ dateString } ${ timeString }` );
+  }, []);
+  
+  const onInputChange = ({ target }) => {
+    const { name, value } = target;
+    setFormData({
+      ...formData,
+      [ name ]: value
+    })
+  }
+
+  const { customerName, customerPhoneNumber } = formData;
+
   return (
-    <div>CreateSalePage</div>
-  )
-}
+    <Box
+      className="animate__animated animate__fadeIn"
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        width: '100%',
+        minHeight: '100%',
+        bgcolor: '#E5E5E5',
+      }}
+    >
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 3,
+          ml: 4,
+          py: 2,
+        }}
+      >
+        <Typography component="h2" variant="h5">
+          Control panel
+        </Typography>
+        <Typography
+          component="h3"
+          variant="h6"
+          sx={{ fontWeight: 400, color: '#999999' }}
+        >
+          Sales
+        </Typography>
+      </Box>
+
+      <Divider variant="middle" />
+
+      <Box
+        sx={{
+          display: 'flex',
+          flex: 1,
+          flexDirection: 'column',
+          height: '100%',
+          bgcolor: '#FAFAFA',
+          borderRadius: 1,
+          mx: 2,
+          mb: 1,
+          p: 2
+        }}
+      >
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mb: 2 }}>
+          <Typography component="h6" variant="h6" sx={{ fontWeight: 400 }}>
+            Create sale
+          </Typography>
+
+          <Typography component="h6" variant="p">
+            Date: { date }
+          </Typography>
+        </Box>
+
+        <Divider variant="middle" />
+
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mt: 2 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Typography component="p" sx={{ mr: 2 }}>
+              Customer name
+            </Typography>
+
+            <TextField 
+              type="text"
+              size="small"
+              name="customerName"
+              value={ customerName }
+              onChange={ onInputChange }
+            />
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+            <Typography component="p" sx={{ mr: 2 }}>
+              Phone number
+            </Typography>
+
+            <TextField 
+              type="number"
+              size="small"
+              name="customerPhoneNumber"
+              value={ customerPhoneNumber }
+              onChange={ onInputChange }
+            />
+          </Box>
+        </Box>
+        
+      </Box>
+    </Box>
+  );
+};
