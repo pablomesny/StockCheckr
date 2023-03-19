@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { ControlPanelPage, DashboardPage, LoginPage } from "../pages"
 import { PublicRoutes, PrivateRoutes, InformationRoutes } from './index';
 import { AuthProvider } from "../context";
+import { AuthRoutes } from "./AuthRoutes";
 
 export const AppRouter = () => {
   return (
@@ -13,10 +14,10 @@ export const AppRouter = () => {
       <Routes>
 
         <Route
-          path="/login"
+          path="/*"
           element={
             <PublicRoutes>
-              <LoginPage />
+              <AuthRoutes />
             </PublicRoutes>
           }
         />

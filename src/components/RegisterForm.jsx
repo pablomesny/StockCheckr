@@ -1,8 +1,9 @@
 import { useState } from "react";
-import { Visibility, VisibilityOff } from "@mui/icons-material"
+import { Link } from "react-router-dom";
 import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Visibility, VisibilityOff } from "@mui/icons-material"
 
-export const RegisterForm = ({ handleChangeForm }) => {
+export const RegisterForm = () => {
 
     const [formData, setFormData] = useState({
         username: '',
@@ -143,7 +144,8 @@ export const RegisterForm = ({ handleChangeForm }) => {
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Button 
                             variant="outlined"
-                            onClick={ handleChangeForm }
+                            component={ Link }
+                            to="/login"
                         >
                             Login
                         </Button>
