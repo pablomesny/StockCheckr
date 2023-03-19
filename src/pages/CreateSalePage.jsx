@@ -86,34 +86,26 @@ export const CreateSalePage = () => {
 
         <Divider variant="middle" />
 
-        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between', mt: 2 }}>
-          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <Typography component="p" sx={{ mr: 2 }}>
-              Customer name
-            </Typography>
+        <Box sx={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', mt: 2 }}>
+          <TextField 
+            type="text"
+            size="small"
+            variant="outlined"
+            label="Customer name"
+            name="customerName"
+            value={ customerName }
+            onChange={ onInputChange }
+          />
 
-            <TextField 
-              type="text"
-              size="small"
-              name="customerName"
-              value={ customerName }
-              onChange={ onInputChange }
-            />
-          </Box>
-
-          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-            <Typography component="p" sx={{ mr: 2 }}>
-              Phone number
-            </Typography>
-
-            <TextField 
-              type="number"
-              size="small"
-              name="customerPhoneNumber"
-              value={ customerPhoneNumber }
-              onChange={ onInputChange }
-            />
-          </Box>
+          <TextField 
+            type="number"
+            size="small"
+            variant="outlined"
+            label="Phone number"
+            name="customerPhoneNumber"
+            value={ customerPhoneNumber }
+            onChange={ onInputChange }
+          />
         </Box>
         
       </Box>
