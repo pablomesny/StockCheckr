@@ -8,5 +8,5 @@ export const PublicRoutes = ({ children }) => {
 
   return ( status !== 'authenticated' )
     ? children
-    : <Navigate to="/" />
+    : <Navigate to="/panel" />
 }

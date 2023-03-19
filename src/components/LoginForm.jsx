@@ -91,7 +91,7 @@ export const LoginForm = () => {
                         <Button 
                             variant="outlined"
                             component={ Link }
-                            to="/register"
+                            to="/auth/register"
                         >
                             Register
                         </Button>

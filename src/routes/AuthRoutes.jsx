@@ -9,9 +9,9 @@ export const AuthRoutes = () => {
 
   useEffect(() => {
     if( bigLogo ) {
-        setTimeout(() => {
-          setBigLogo( false );
-        }, 2500);
+      setTimeout(() => {
+        setBigLogo( false );
+      }, 2500);
     }
   }, []);
   
@@ -41,8 +41,6 @@ export const AuthRoutes = () => {
             </Box>
           )
       }
-        
     </>
-
   )
 }

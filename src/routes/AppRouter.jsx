@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import { ControlPanelPage, DashboardPage, LoginPage } from "../pages"
 import { PublicRoutes, PrivateRoutes, InformationRoutes } from './index';
 import { AuthProvider } from "../context";
 import { AuthRoutes } from "./AuthRoutes";
@@ -14,7 +13,7 @@ export const AppRouter = () => {
       <Routes>
 
         <Route
-          path="/*"
+          path="/auth/*"
           element={
             <PublicRoutes>
               <AuthRoutes />
@@ -30,6 +29,8 @@ export const AppRouter = () => {
             </PrivateRoutes>
           }
         />
+
+        <Route path="/" element={ <Navigate to="/auth/login" /> } />
 
       </Routes>
     </AuthProvider>
