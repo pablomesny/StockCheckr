@@ -1,24 +1,20 @@
-import { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Navigate, Route, Routes } from "react-router-dom"
 import { FullScreenLogo, LoginForm, RegisterForm } from "../components";
 
-export const LoginPage = () => {
-
+export const AuthRoutes = () => {
+ 
   const [ bigLogo, setBigLogo ] = useState( true );
 
-  const [ isUserRegistered, setIsUserRegistered ] = useState( true );
-
   useEffect(() => {
-    setTimeout(() => {
-      setBigLogo( false );
-    }, 2500);
+    if( bigLogo ) {
+      setTimeout(() => {
+        setBigLogo( false );
+      }, 2500);
+    }
   }, []);
   
-
-  const handleChangeForm = () => {
-    setIsUserRegistered( prev => !prev );
-  }
-
   return (
     <>
       {
@@ -33,13 +29,12 @@ export const LoginPage = () => {
                   <img src="/src/assets/stockcheckr-login-logo.png" alt="brand logo" className="login-logo" />
                 </Grid>
 
-                {
-                  isUserRegistered
+                <Routes>
+                    <Route path="/login" element={ <LoginForm /> } />
+                    <Route path="/register" element={ <RegisterForm /> } />
 
-                    ? <LoginForm handleChangeForm={ handleChangeForm } />
-
-                    : <RegisterForm handleChangeForm={ handleChangeForm } />
-                }
+                    <Route path="/*" element={ <Navigate to="/login" /> } />
+                </Routes>
                 
               </Grid>
 
@@ -47,6 +42,5 @@ export const LoginPage = () => {
           )
       }
     </>
-
   )
 }

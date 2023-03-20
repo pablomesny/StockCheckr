@@ -1,11 +1,5 @@
-import { Navbar, Submenu } from "../components"
-
 export const DashboardPage = () => {
   return (
-    <>
-      <Navbar />
-
-      <Submenu />
-    </>
+    <h1>Dashboard</h1>
   )
 }

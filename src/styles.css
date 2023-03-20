@@ -12,6 +12,10 @@ body {
     height: 100vh;
 }
 
+.fullscreen-logo {
+    max-width: 100vw;
+}
+
 .navbar-logo {
     object-fit: contain;
     max-width: 180px;
