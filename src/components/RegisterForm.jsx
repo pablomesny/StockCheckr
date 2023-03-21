@@ -14,16 +14,16 @@ const initialState = {
 
 export const RegisterForm = () => {
 
-    const { formData, onInputChange } = useForm( initialState );
+    const { formData, isInputValid, onInputChange, handleInputValidation, handlePasswordMatch } = useForm( initialState );
     const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
-
 
     const [ isSecured, setIsSecured ] = useState({
         password: true,
         passwordCheck: true
-    });
+    });    
     
     const { username, email, password, passwordCheck } = formData;
+    const { isPasswordValid, isEmailValid, doesPasswordsMatch } = isInputValid;
     const { isLoading, hasError, isSuccessful } = state;
 
     const handleCreateUser = () => {
@@ -31,22 +31,24 @@ export const RegisterForm = () => {
         handleHasError( null );
         handleIsSuccessful( false );
 
-        fetch( `${ ENDPOINT }/api/users`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ ...formData })
-        } )
-            .then( () => {
-                handleIsSuccessful( true );
-            })
-            .catch( ( err ) => {
-                handleHasError( err );
-            })
-            .finally( () => {
-                handleIsLoading( false );
-            })
+        if( isPasswordValid && isEmailValid && doesPasswordsMatch ) {
+            fetch( `${ ENDPOINT }/api/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ...formData })
+            } )
+                .then( () => {
+                    handleIsSuccessful( true );
+                })
+                .catch( ( err ) => {
+                    handleHasError( err );
+                })
+                .finally( () => {
+                    handleIsLoading( false );
+                })
+        }
     }
 
   return (
@@ -87,10 +89,13 @@ export const RegisterForm = () => {
                         fullWidth
                         label="Email"
                         type="email"
+                        error={ !isEmailValid }
                         placeholder="your@email.com"
                         name="email"
+                        helperText={ isEmailValid ? '' : 'Email is not valid' }
                         value={ email }
                         onChange={ onInputChange }
+                        onBlur={ handleInputValidation }
                     />
                 </Grid>
 
@@ -102,8 +107,10 @@ export const RegisterForm = () => {
                         fullWidth
                         label="Password"
                         type={ isSecured.password ? "password" : "text" }
+                        error={ !isPasswordValid }
                         placeholder="Password"
                         name="password"
+                        helperText={ isPasswordValid ? '' : 'Enter at least 8 characters' }
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -122,6 +129,7 @@ export const RegisterForm = () => {
                         }}
                         value={ password }
                         onChange={ onInputChange }
+                        onBlur={ handleInputValidation }
                     />
                 </Grid>
 
@@ -148,11 +156,14 @@ export const RegisterForm = () => {
                             )
                         }}
                         label="Repeat password"
-                          type={ isSecured.passwordCheck ? "password" : "text" }
+                        type={ isSecured.passwordCheck ? "password" : "text" }
                         placeholder="Repeat password"
                         name="passwordCheck"
                         value={ passwordCheck }
+                        error={ !doesPasswordsMatch }
+                        helperText={ doesPasswordsMatch ? '' : 'Passwords dont match' }
                         onChange={ onInputChange }
+                        onBlur={ () => handlePasswordMatch( password, passwordCheck ) }
                     />
                 </Grid>
 
