@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { ENDPOINT } from "../utils";
-import { useFetch } from "../hooks";
+import { useFetch, useForm } from "../hooks";
 
 const initialState = {
     username: '',
@@ -14,8 +14,9 @@ const initialState = {
 
 export const RegisterForm = () => {
 
-    const [formData, setFormData] = useState( initialState );
+    const { formData, onInputChange } = useForm( initialState );
     const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
+
 
     const [ isSecured, setIsSecured ] = useState({
         password: true,
@@ -24,14 +25,6 @@ export const RegisterForm = () => {
     
     const { username, email, password, passwordCheck } = formData;
     const { isLoading, hasError, isSuccessful } = state;
-
-    const onInputChange = ({ target }) => {
-        const { name, value } = target;
-        setFormData({
-            ...formData,
-            [ name ]: value
-        })
-    }
 
     const handleCreateUser = () => {
         handleIsLoading( true );
