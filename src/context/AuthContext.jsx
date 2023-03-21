@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
 
     const [ authData, setAuthData ] = useState({
-        status: 'authenticated'
+        status: 'not authenticated'
     })
 
   return (

@@ -1,23 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
+import { ENDPOINT } from "../utils";
+import { useFetch } from "../hooks";
+
+const initialState = {
+    username: '',
+    email: '',
+    password: '',
+    passwordCheck: ''
+}
 
 export const RegisterForm = () => {
 
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        passwordCheck: ''
-    });
+    const [formData, setFormData] = useState( initialState );
+    const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
 
     const [ isSecured, setIsSecured ] = useState({
         password: true,
         passwordCheck: true
     });
-
+    
     const { username, email, password, passwordCheck } = formData;
+    const { isLoading, hasError, isSuccessful } = state;
 
     const onInputChange = ({ target }) => {
         const { name, value } = target;
@@ -25,6 +31,29 @@ export const RegisterForm = () => {
             ...formData,
             [ name ]: value
         })
+    }
+
+    const handleCreateUser = () => {
+        handleIsLoading( true );
+        handleHasError( null );
+        handleIsSuccessful( false );
+
+        fetch( `${ ENDPOINT }/api/users`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ ...formData })
+        } )
+            .then( () => {
+                handleIsSuccessful( true );
+            })
+            .catch( ( err ) => {
+                handleHasError( err );
+            })
+            .finally( () => {
+                handleIsLoading( false );
+            })
     }
 
   return (
@@ -134,10 +163,26 @@ export const RegisterForm = () => {
                     />
                 </Grid>
 
+                {
+                    isSuccessful && (
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Alert severity="success">USER CREATED SUCCESSFULLY</Alert>
+                        </Box>
+                    )
+                }
+
+                {
+                    hasError && (
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Alert severity="error">ERROR CREATING THE USER</Alert>
+                        </Box>
+                    )
+                }
+
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained">
-                            Create
+                        <Button variant="contained" disabled={ isLoading } onClick={ handleCreateUser }>
+                            { isLoading ? 'Sending...' : 'Create user' }
                         </Button>
                     </Grid>
 
