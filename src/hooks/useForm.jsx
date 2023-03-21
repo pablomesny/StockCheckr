@@ -12,8 +12,20 @@ export const useForm = ( initialState = {} ) => {
         })
     }
 
+    const isPasswordValid = ( password ) => {
+        return password.length < 8;
+    }
+
+    const isEmailValid = ( email ) => {
+        const emailRegex = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+
+        return email.match( emailRegex );
+    }
+
   return {
     formData,
-    onInputChange
+    onInputChange,
+    isPasswordValid,
+    isEmailValid
   }
 }
