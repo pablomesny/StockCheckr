@@ -6,10 +6,6 @@ import { AuthRoutes } from "./AuthRoutes";
 export const AppRouter = () => {
   return (
     <AuthProvider>
-      {/* <Navbar /> */}
-
-      {/* <Submenu /> */}
-
       <Routes>
 
         <Route

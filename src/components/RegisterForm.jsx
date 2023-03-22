@@ -185,7 +185,7 @@ export const RegisterForm = () => {
 
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" disabled={ isLoading } onClick={ handleCreateUser }>
+                        <Button variant="contained" disabled={ isLoading } onClick={ () => handleCreateUser }>
                             { isLoading ? 'Sending...' : 'Create user' }
                         </Button>
                     </Grid>
