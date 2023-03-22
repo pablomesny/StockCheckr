@@ -1,25 +1,57 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
+import { useFetch, useForm } from "../hooks";
+import { ENDPOINT, TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
+import { AuthContext } from "../context";
+
+const initialState = {
+    email: '',
+    password: ''
+}
 
 export const LoginForm = () => {
 
-    const [ formData, setFormData ] = useState({
-        email: '',
-        password: ''
-      });
-    
-    const [ isSecured ,setIsSecured ] = useState(true);
+    const { formData, onInputChange } = useForm( initialState );
+    const { state, handleHasError, handleIsLoading } = useFetch();
+
+    const [ isSecured, setIsSecured ] = useState(true);
+
+    const { authData, handleChangeAuth } = useContext( AuthContext );
 
     const { email, password } = formData;
+    const { isLoading, hasError } = state;
 
-    const onInputChange = ({ target }) => {
-        const { name, value } = target;
-        setFormData({
-            ...formData,
-            [ name ]: value
+    const handleLogin = () => {
+        handleIsLoading( true );
+        handleHasError( null );
+        handleChangeAuth({
+            ...authData,
+            status: 'pending'
         })
+
+        fetch( `${ ENDPOINT }/api/auth`, {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify({ ...formData })
+        })
+            .then( res => res.json())
+            .then( res => {
+                const { password, state, ...user } = res.user;
+                user.status = 'authenticated';
+                localStorage.setItem( TOKEN_LOCALSTORAGE, res.token );
+                localStorage.setItem( USER_LOCALSTORAGE, JSON.stringify( user ) );
+                handleChangeAuth( user );
+            })
+            .catch( err => {
+                handleHasError( err );
+            })
+            .finally( () => {
+                handleIsLoading( false );
+            })
     }
 
   return (
@@ -80,10 +112,17 @@ export const LoginForm = () => {
                     />
                 </Grid>
 
+                {
+                    hasError &&
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Alert severity="error">LOGIN ERROR</Alert>
+                        </Box>
+                }
+
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained">
-                            Login
+                        <Button variant="contained" disabled={ isLoading } onClick={ () => handleLogin() }>
+                            { isLoading ? 'Sending...' : 'Login' }
                         </Button>
                     </Grid>
 

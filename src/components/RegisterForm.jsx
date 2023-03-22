@@ -1,30 +1,54 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
+import { ENDPOINT } from "../utils";
+import { useFetch, useForm } from "../hooks";
+
+const initialState = {
+    username: '',
+    email: '',
+    password: '',
+    passwordCheck: ''
+}
 
 export const RegisterForm = () => {
 
-    const [formData, setFormData] = useState({
-        username: '',
-        email: '',
-        password: '',
-        passwordCheck: ''
-    });
+    const { formData, isInputValid, onInputChange, handleInputValidation, handlePasswordMatch } = useForm( initialState );
+    const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
 
     const [ isSecured, setIsSecured ] = useState({
         password: true,
         passwordCheck: true
-    });
-
+    });    
+    
     const { username, email, password, passwordCheck } = formData;
+    const { isPasswordValid, isEmailValid, doesPasswordsMatch } = isInputValid;
+    const { isLoading, hasError, isSuccessful } = state;
 
-    const onInputChange = ({ target }) => {
-        const { name, value } = target;
-        setFormData({
-            ...formData,
-            [ name ]: value
-        })
+    const handleCreateUser = () => {
+        handleIsLoading( true );
+        handleHasError( null );
+        handleIsSuccessful( false );
+
+        if( isPasswordValid && isEmailValid && doesPasswordsMatch ) {
+            fetch( `${ ENDPOINT }/api/users`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ ...formData })
+            } )
+                .then( () => {
+                    handleIsSuccessful( true );
+                })
+                .catch( ( err ) => {
+                    handleHasError( err );
+                })
+                .finally( () => {
+                    handleIsLoading( false );
+                })
+        }
     }
 
   return (
@@ -65,10 +89,13 @@ export const RegisterForm = () => {
                         fullWidth
                         label="Email"
                         type="email"
+                        error={ !isEmailValid }
                         placeholder="your@email.com"
                         name="email"
+                        helperText={ isEmailValid ? '' : 'Email is not valid' }
                         value={ email }
                         onChange={ onInputChange }
+                        onBlur={ handleInputValidation }
                     />
                 </Grid>
 
@@ -80,8 +107,10 @@ export const RegisterForm = () => {
                         fullWidth
                         label="Password"
                         type={ isSecured.password ? "password" : "text" }
+                        error={ !isPasswordValid }
                         placeholder="Password"
                         name="password"
+                        helperText={ isPasswordValid ? '' : 'Enter at least 8 characters' }
                         InputProps={{
                             endAdornment: (
                                 <InputAdornment position="end">
@@ -100,6 +129,7 @@ export const RegisterForm = () => {
                         }}
                         value={ password }
                         onChange={ onInputChange }
+                        onBlur={ handleInputValidation }
                     />
                 </Grid>
 
@@ -126,18 +156,37 @@ export const RegisterForm = () => {
                             )
                         }}
                         label="Repeat password"
-                          type={ isSecured.passwordCheck ? "password" : "text" }
+                        type={ isSecured.passwordCheck ? "password" : "text" }
                         placeholder="Repeat password"
                         name="passwordCheck"
                         value={ passwordCheck }
+                        error={ !doesPasswordsMatch }
+                        helperText={ doesPasswordsMatch ? '' : 'Passwords dont match' }
                         onChange={ onInputChange }
+                        onBlur={ () => handlePasswordMatch( password, passwordCheck ) }
                     />
                 </Grid>
 
+                {
+                    isSuccessful && (
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Alert severity="success">USER CREATED SUCCESSFULLY</Alert>
+                        </Box>
+                    )
+                }
+
+                {
+                    hasError && (
+                        <Box sx={{ width: '100%', mt: 2 }}>
+                            <Alert severity="error">ERROR CREATING THE USER</Alert>
+                        </Box>
+                    )
+                }
+
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained">
-                            Create
+                        <Button variant="contained" disabled={ isLoading } onClick={ () => handleCreateUser }>
+                            { isLoading ? 'Sending...' : 'Create user' }
                         </Button>
                     </Grid>
 
