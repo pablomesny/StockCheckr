@@ -1,4 +1,5 @@
 import { createContext, useState } from 'react';
+import { USER_LOCALSTORAGE } from '../utils';
 
 export const AuthContext = createContext();
 
@@ -9,26 +10,36 @@ const initialValues = {
   email: ''
 };
 
-export const AuthProvider = ({ children }) => {
-  const [ authData, setAuthData ] = useState( initialValues );
-
-  const handleChangeAuth = (value) => {
-    setAuthData( value );
+const prevValues = () => {
+  try {
+    const user = JSON.parse( localStorage.getItem(USER_LOCALSTORAGE) ) ?? initialValues;
+    return user;
+  } catch (error) {
+    return initialValues;
   }
+};
+
+export const AuthProvider = ({ children }) => {
+  const [ authData, setAuthData ] = useState( prevValues() );
+
+  const handleChangeAuth = value => {
+    setAuthData( value );
+  };
 
   const onLogout = () => {
     setAuthData( initialValues );
-  }
+  };
 
   const value = {
     authData,
     handleChangeAuth,
     onLogout
-  }
+  };
 
-  return (
-    <AuthContext.Provider value={ value }>
+  return(
+    <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  );
+  )
+    
 };

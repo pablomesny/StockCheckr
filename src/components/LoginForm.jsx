@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { useFetch, useForm } from "../hooks";
-import { ENDPOINT } from "../utils";
+import { ENDPOINT, TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
 import { AuthContext } from "../context";
 
 const initialState = {
@@ -42,12 +42,11 @@ export const LoginForm = () => {
             .then( res => {
                 const { password, state, ...user } = res.user;
                 user.status = 'authenticated';
-                localStorage.setItem( 'x-token', res.token );
-                console.log(user);
+                localStorage.setItem( TOKEN_LOCALSTORAGE, res.token );
+                localStorage.setItem( USER_LOCALSTORAGE, JSON.stringify( user ) );
                 handleChangeAuth( user );
             })
             .catch( err => {
-                console.log(err);
                 handleHasError( err );
             })
             .finally( () => {
