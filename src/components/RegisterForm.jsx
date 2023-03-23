@@ -161,7 +161,7 @@ export const RegisterForm = () => {
                         name="passwordCheck"
                         value={ passwordCheck }
                         error={ !doesPasswordsMatch }
-                        helperText={ doesPasswordsMatch ? '' : 'Passwords dont match' }
+                        helperText={ doesPasswordsMatch ? '' : 'Passwords do not match' }
                         onChange={ onInputChange }
                         onBlur={ () => handlePasswordMatch( password, passwordCheck ) }
                     />
