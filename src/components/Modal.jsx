@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 
 export const Modal = ({ isOpen, handleToggleModal, title, inputLabel, onSubmit }) => {
 
     const [ inputFieldValue, setInputFieldValue ] = useState('');
+
+    useEffect(() => {
+      setInputFieldValue( '' );
+    }, [ handleToggleModal ]);
+    
 
     const handleInputChange = ({ target }) => {
         setInputFieldValue( target.value );
