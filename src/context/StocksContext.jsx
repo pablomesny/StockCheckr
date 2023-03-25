@@ -23,13 +23,13 @@ export const StocksProvider = ({ children }) => {
     }
 
     const handleAddGroup = ( group ) => {
-      setStocks( prev => ({
+      setStocks({
         ...stocks,
         groups: [
-          prev.groups,
+          ...stocks.groups,
           group
         ]
-      }))
+      })
     }
 
     const value = {

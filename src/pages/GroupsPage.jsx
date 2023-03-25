@@ -36,12 +36,17 @@ export const GroupsPage = () => {
         } )
             .then( res => res.json() )
             .then( res => {
-                handleAddGroup( res );
+                if( !res.ok || res.errors ) {
+                    handleHasError( res.errors[0].msg );
+                    setIsSnackbarOpen( true );
+                    return;
+                }
+                handleAddGroup( res.group );
                 handleIsSuccessful( true );
                 setIsSnackbarOpen( true );
             })
-            .catch( () => {
-                handleHasError( true );
+            .catch( ( err ) => {
+                handleHasError( err );
                 setIsSnackbarOpen( true );
             })
             .finally( () => {
@@ -94,11 +99,14 @@ export const GroupsPage = () => {
 
                 {
                     hasError && (
+                        <>
+                        { console.log( hasError ) }
                         <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
                             <Box sx={{ width: '100%' }}>
-                                <Alert severity='error'>Error while creating group</Alert>
+                                <Alert severity='error'>{ hasError }</Alert>
                             </Box>
                         </Snackbar>
+                        </>
                     )
                 }
 
