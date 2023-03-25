@@ -40,6 +40,11 @@ export const LoginForm = () => {
         })
             .then( res => res.json())
             .then( res => {
+                if( !res.ok || res.errors ) {
+                    const error = res.msg ?? res.errors[0].msg;
+                    handleHasError( error );
+                    return;
+                }
                 const { password, state, ...user } = res.user;
                 user.status = 'authenticated';
                 localStorage.setItem( TOKEN_LOCALSTORAGE, res.token );
@@ -115,7 +120,7 @@ export const LoginForm = () => {
                 {
                     hasError &&
                         <Box sx={{ width: '100%', mt: 2 }}>
-                            <Alert severity="error">LOGIN ERROR</Alert>
+                            <Alert severity="error">{ hasError }</Alert>
                         </Box>
                 }
 

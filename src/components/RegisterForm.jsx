@@ -38,6 +38,11 @@ export const RegisterForm = () => {
                 body: JSON.stringify({ ...formData })
             } )
                 .then( () => {
+                    if( !res.ok || res.errors ) {
+                        const error = res.msg ?? res.errors[0].msg;
+                        handleHasError( error );
+                        return;
+                    }
                     handleIsSuccessful( true );
                 })
                 .catch( ( err ) => {

@@ -37,7 +37,8 @@ export const GroupsPage = () => {
             .then( res => res.json() )
             .then( res => {
                 if( !res.ok || res.errors ) {
-                    handleHasError( res.errors[0].msg );
+                    const error = res.msg ?? res.errors[0].msg;
+                    handleHasError( error );
                     setIsSnackbarOpen( true );
                     return;
                 }
