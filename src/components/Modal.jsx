@@ -1,8 +1,19 @@
+import { useState } from "react";
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from "@mui/material";
 
-// TODO: add submit function by props
+export const Modal = ({ isOpen, handleToggleModal, title, inputLabel, onSubmit }) => {
 
-export const Modal = ({ isOpen, handleToggleModal, title, inputLabel }) => {
+    const [ inputFieldValue, setInputFieldValue ] = useState('');
+
+    const handleInputChange = ({ target }) => {
+        setInputFieldValue( target.value );
+    }
+
+    const handleModalSubmit = () => {
+        onSubmit( inputFieldValue );
+        handleToggleModal();
+    }
+
   return (
     <Dialog 
         open={ isOpen } 
@@ -19,11 +30,13 @@ export const Modal = ({ isOpen, handleToggleModal, title, inputLabel }) => {
                 type="text"
                 fullWidth
                 variant="standard"
+                value={ inputFieldValue }
+                onChange={ handleInputChange }
             />
         </DialogContent>
         <DialogActions>
             <Button onClick={ handleToggleModal }>Close</Button>
-            <Button variant="contained" onClick={ handleToggleModal }>Save changes</Button>
+            <Button variant="contained" onClick={ handleModalSubmit }>Save changes</Button>
         </DialogActions>
     </Dialog>
   )

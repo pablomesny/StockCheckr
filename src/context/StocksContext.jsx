@@ -1,6 +1,6 @@
 import { createContext, useState } from "react"
 
-const UserContext = createContext();
+export const StocksContext = createContext();
 
 const initialValues = {
   groups: [],
@@ -8,10 +8,10 @@ const initialValues = {
   categories: [],
   attributesGroup: [],
   attributes: [],
-  sales: null
+  sales: []
 }
 
-export const UserProvider = ({ children }) => {
+export const StocksProvider = ({ children }) => {
 
     const [ stocks, setStocks ] = useState( initialValues );
 
@@ -39,8 +39,8 @@ export const UserProvider = ({ children }) => {
     }
 
   return (
-    <UserContext.provider value={ value }>
+    <StocksContext.Provider value={ value }>
         { children }
-    </UserContext.provider>
+    </StocksContext.Provider>
   )
 }

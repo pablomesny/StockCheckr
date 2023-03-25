@@ -1,19 +1,27 @@
-import { useState } from 'react';
-import { Box, Button, Divider, TextField, Typography } from '@mui/material';
+import { useContext, useState } from 'react';
+import { Alert, Box, Button, Divider, Snackbar, TextField, Typography } from '@mui/material';
 import { useFetch } from '../hooks';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
+import { StocksContext } from '../context';
+import { ENDPOINT } from '../utils';
 
 export const GroupsPage = () => {
 
-    const [ isOpen, setIsOpen ] = useState( false );
-    const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
+    const { stocks, handleAddGroup, handleSetGroups } = useContext( StocksContext );
+    
+    const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
+    
+    const [ isModalOpen, setIsModalOpen ] = useState( false );
+    const [ isSnackbarOpen, setIsSnackbarOpen ] = useState( false );
+
+    const { isLoading, hasError, isSuccessful } = fetchState;
 
     const handleToggleModal = () => {
-        setIsOpen( prev => !prev );
+        setIsModalOpen( prev => !prev );
     }
 
-    const handleCreateGroup = ( state ) => {
+    const handleCreateGroup = ( name ) => {
         handleIsLoading( true );
         handleHasError( null );
         handleIsSuccessful( false );
@@ -24,12 +32,20 @@ export const GroupsPage = () => {
                 'Content-Type': 'application/json',
                 'x-token': localStorage.getItem( 'x-token' )
             },
-            body: {
-                state: JSON.stringify( state )
-            }
+            body: JSON.stringify({ name })
         } )
-            .then( () => {
-                
+            .then( res => res.json() )
+            .then( res => {
+                handleAddGroup( res );
+                handleIsSuccessful( true );
+                setIsSnackbarOpen( true );
+            })
+            .catch( () => {
+                handleHasError( true );
+                setIsSnackbarOpen( true );
+            })
+            .finally( () => {
+                handleIsLoading( false );
             })
     }
 
@@ -69,11 +85,32 @@ export const GroupsPage = () => {
                         onClick={ handleToggleModal }
                         variant="contained"
                         color="primary"
+                        disabled={ isLoading }
                         sx={{ display: 'flex', ml: 'auto', mr: 2 }}
                     >
-                        Add group
+                        { isLoading ? 'Loading...' : 'Add group' }
                     </Button>
                 </Box>
+
+                {
+                    hasError && (
+                        <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
+                            <Box sx={{ width: '100%' }}>
+                                <Alert severity='error'>Error while creating group</Alert>
+                            </Box>
+                        </Snackbar>
+                    )
+                }
+
+                {
+                    isSuccessful && (
+                        <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
+                            <Box sx={{ width: '100%' }}>
+                                <Alert severity='success'>Group created successfully</Alert>
+                            </Box>
+                        </Snackbar>
+                    )
+                }
 
                 <Divider variant="middle" />
 
@@ -144,10 +181,11 @@ export const GroupsPage = () => {
             </Box>
 
             <Modal 
-                isOpen={ isOpen } 
+                isOpen={ isModalOpen } 
                 handleToggleModal={ handleToggleModal } 
                 title="Add group"
                 inputLabel="Group"
+                onSubmit={ handleCreateGroup }
             />
         </>
     );
