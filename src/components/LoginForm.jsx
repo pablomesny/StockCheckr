@@ -14,20 +14,20 @@ const initialState = {
 export const LoginForm = () => {
 
     const { formData, onInputChange } = useForm( initialState );
-    const { state, handleHasError, handleIsLoading } = useFetch();
+    const { fetchState, handleHasError, handleIsLoading } = useFetch();
 
     const [ isSecured, setIsSecured ] = useState(true);
 
-    const { authData, handleChangeAuth } = useContext( AuthContext );
+    const { auth, handleChangeAuth } = useContext( AuthContext );
 
     const { email, password } = formData;
-    const { isLoading, hasError } = state;
+    const { isLoading, hasError } = fetchState;
 
     const handleLogin = () => {
         handleIsLoading( true );
         handleHasError( null );
         handleChangeAuth({
-            ...authData,
+            ...auth,
             status: 'pending'
         })
 

@@ -1,14 +1,36 @@
 import { useState } from 'react';
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
+import { useFetch } from '../hooks';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
 
 export const GroupsPage = () => {
 
     const [ isOpen, setIsOpen ] = useState( false );
+    const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
 
     const handleToggleModal = () => {
         setIsOpen( prev => !prev );
+    }
+
+    const handleCreateGroup = ( state ) => {
+        handleIsLoading( true );
+        handleHasError( null );
+        handleIsSuccessful( false );
+
+        fetch( `${ ENDPOINT }/api/groups`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-token': localStorage.getItem( 'x-token' )
+            },
+            body: {
+                state: JSON.stringify( state )
+            }
+        } )
+            .then( () => {
+                
+            })
     }
 
     return (

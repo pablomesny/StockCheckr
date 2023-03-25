@@ -4,8 +4,8 @@ import { AuthContext } from "../context";
 
 export const PublicRoutes = ({ children }) => {
 
-  const { authData } = useContext( AuthContext );
-  const { status } = authData;
+  const { auth } = useContext( AuthContext );
+  const { status } = auth;
 
   return ( status !== 'authenticated' )
     ? children

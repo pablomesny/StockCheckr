@@ -1,37 +1,46 @@
 import { useState } from 'react';
 
 export const useFetch = () => {
-  const [state, setState] = useState({
+  const [fetchState, setFetchState] = useState({
     isLoading: false,
     hasError: null,
     isSuccessful: false
   });
 
   const handleIsLoading = bool => {
-    setState( prev => ({
+    setFetchState( prev => ({
       ...prev,
       isLoading: bool
     }))
   };
 
   const handleHasError = error => {
-    setState( prev => ({
+    setFetchState( prev => ({
       ...prev,
       hasError: error
     }));
   };
 
   const handleIsSuccessful = bool => {
-    setState( prev => ({
+    setFetchState( prev => ({
       ...prev,
       isSuccessful: bool
     }));
   };
 
+  const handleStartFetching = () => {
+    setFetchState( () => ({
+      isLoading: true,
+      hasError: null,
+      isSuccessful: false
+    }))
+  }
+
   return {
-    state,
+    fetchState,
     handleIsLoading,
     handleHasError,
-    handleIsSuccessful
+    handleIsSuccessful,
+    handleStartFetching
   };
 };

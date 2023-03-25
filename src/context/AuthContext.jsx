@@ -20,18 +20,19 @@ const prevValues = () => {
 };
 
 export const AuthProvider = ({ children }) => {
-  const [ authData, setAuthData ] = useState( prevValues() );
+  
+  const [ auth, setAuth ] = useState( prevValues() );
 
   const handleChangeAuth = value => {
-    setAuthData( value );
+    setAuth( value );
   };
 
   const onLogout = () => {
-    setAuthData( () => prevValues() );
+    setAuth( () => prevValues() );
   };
 
   const value = {
-    authData,
+    auth,
     handleChangeAuth,
     onLogout
   };

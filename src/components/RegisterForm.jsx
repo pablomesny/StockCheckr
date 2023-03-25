@@ -15,7 +15,7 @@ const initialState = {
 export const RegisterForm = () => {
 
     const { formData, isInputValid, onInputChange, handleInputValidation, handlePasswordMatch } = useForm( initialState );
-    const { state, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
+    const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetch();
 
     const [ isSecured, setIsSecured ] = useState({
         password: true,
@@ -24,12 +24,10 @@ export const RegisterForm = () => {
     
     const { username, email, password, passwordCheck } = formData;
     const { isPasswordValid, isEmailValid, doesPasswordsMatch } = isInputValid;
-    const { isLoading, hasError, isSuccessful } = state;
+    const { isLoading, hasError, isSuccessful } = fetchState;
 
     const handleCreateUser = () => {
-        handleIsLoading( true );
-        handleHasError( null );
-        handleIsSuccessful( false );
+        handleStartFetching();
 
         if( isPasswordValid && isEmailValid && doesPasswordsMatch ) {
             fetch( `${ ENDPOINT }/api/users`, {
