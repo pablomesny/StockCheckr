@@ -100,12 +100,11 @@ export const GroupsPage = () => {
                 {
                     hasError && (
                         <>
-                        { console.log( hasError ) }
-                        <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
-                            <Box sx={{ width: '100%' }}>
-                                <Alert severity='error'>{ hasError }</Alert>
-                            </Box>
-                        </Snackbar>
+                            <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
+                                <Box sx={{ width: '100%' }}>
+                                    <Alert severity='error'>{ hasError }</Alert>
+                                </Box>
+                            </Snackbar>
                         </>
                     )
                 }
