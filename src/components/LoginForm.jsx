@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
+import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { useFetch, useForm } from "../hooks";
 import { ENDPOINT, TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
@@ -14,20 +14,20 @@ const initialState = {
 export const LoginForm = () => {
 
     const { formData, onInputChange } = useForm( initialState );
-    const { state, handleHasError, handleIsLoading } = useFetch();
+    const { fetchState, handleHasError, handleIsLoading } = useFetch();
 
     const [ isSecured, setIsSecured ] = useState(true);
 
-    const { authData, handleChangeAuth } = useContext( AuthContext );
+    const { auth, handleChangeAuth } = useContext( AuthContext );
 
     const { email, password } = formData;
-    const { isLoading, hasError } = state;
+    const { isLoading, hasError } = fetchState;
 
     const handleLogin = () => {
         handleIsLoading( true );
         handleHasError( null );
         handleChangeAuth({
-            ...authData,
+            ...auth,
             status: 'pending'
         })
 
@@ -40,6 +40,11 @@ export const LoginForm = () => {
         })
             .then( res => res.json())
             .then( res => {
+                if( !res.ok || res.errors ) {
+                    const error = res.msg || res.errors[0].msg;
+                    handleHasError( error );
+                    return;
+                }
                 const { password, state, ...user } = res.user;
                 user.status = 'authenticated';
                 localStorage.setItem( TOKEN_LOCALSTORAGE, res.token );
@@ -115,13 +120,13 @@ export const LoginForm = () => {
                 {
                     hasError &&
                         <Box sx={{ width: '100%', mt: 2 }}>
-                            <Alert severity="error">LOGIN ERROR</Alert>
+                            <Alert severity="error">{ hasError }</Alert>
                         </Box>
                 }
 
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" disabled={ isLoading } onClick={ () => handleLogin() }>
+                        <Button variant="contained" disabled={ isLoading } onClick={ handleLogin }>
                             { isLoading ? 'Sending...' : 'Login' }
                         </Button>
                     </Grid>
