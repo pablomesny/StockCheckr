@@ -37,15 +37,18 @@ export const RegisterForm = () => {
                 },
                 body: JSON.stringify({ ...formData })
             } )
-                .then( () => {
+                .then( res => res.json() )
+                .then( ( res ) => {
+                    console.log(res);
                     if( !res.ok || res.errors ) {
-                        const error = res.msg ?? res.errors[0].msg;
+                        const error = res.msg || res.errors[0].msg;
                         handleHasError( error );
                         return;
                     }
                     handleIsSuccessful( true );
                 })
                 .catch( ( err ) => {
+                    console.log(err);
                     handleHasError( err );
                 })
                 .finally( () => {
@@ -181,14 +184,14 @@ export const RegisterForm = () => {
                 {
                     hasError && (
                         <Box sx={{ width: '100%', mt: 2 }}>
-                            <Alert severity="error">ERROR CREATING THE USER</Alert>
+                            <Alert severity="error">{ hasError }</Alert>
                         </Box>
                     )
                 }
 
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" disabled={ isLoading } onClick={ () => handleCreateUser }>
+                        <Button variant="contained" disabled={ isLoading } onClick={ handleCreateUser }>
                             { isLoading ? 'Sending...' : 'Create user' }
                         </Button>
                     </Grid>

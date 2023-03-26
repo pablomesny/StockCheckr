@@ -41,7 +41,7 @@ export const LoginForm = () => {
             .then( res => res.json())
             .then( res => {
                 if( !res.ok || res.errors ) {
-                    const error = res.msg ?? res.errors[0].msg;
+                    const error = res.msg || res.errors[0].msg;
                     handleHasError( error );
                     return;
                 }
@@ -126,7 +126,7 @@ export const LoginForm = () => {
 
                 <Grid container sx={{ mt: 4, mb: 2 }}>
                     <Grid item xs={ 6 } sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Button variant="contained" disabled={ isLoading } onClick={ () => handleLogin() }>
+                        <Button variant="contained" disabled={ isLoading } onClick={ handleLogin }>
                             { isLoading ? 'Sending...' : 'Login' }
                         </Button>
                     </Grid>
