@@ -1,5 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import { Alert, Box, Button, Divider, Snackbar, TextField, Typography } from '@mui/material';
+import {
+    Alert,
+    Box,
+    Button,
+    Divider,
+    Snackbar,
+    TextField,
+    Typography
+} from '@mui/material';
 import { useFetch } from '../hooks';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
@@ -7,89 +15,92 @@ import { AuthContext, StocksContext } from '../context';
 import { ENDPOINT } from '../utils';
 
 export const GroupsPage = () => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
-    const [ isModalOpen, setIsModalOpen ] = useState( false );
-    const [ isSnackbarOpen, setIsSnackbarOpen ] = useState( false );
-    
-    const { stocks, handleAddGroup, handleSetGroups } = useContext( StocksContext );
-    const { auth } = useContext( AuthContext );
-    
+    const { stocks, handleAddGroup, handleSetGroups } = useContext(StocksContext);
+    const { auth } = useContext(AuthContext);
+
     const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
 
     const { isLoading, hasError, isSuccessful } = fetchState;
     const { groups } = stocks;
 
+
     useEffect(() => {
-        if( groups.length === 0 ) {
-            const controller = new AbortController();
+        const controller = new AbortController();
+
+        if (groups.length === 0) {
             const { signal } = controller;
-      
-            handleIsLoading( true );
-            handleHasError( null );
-            handleIsSuccessful( false );
-      
-            fetch( `${ ENDPOINT }/api/groups/?limit=5&from=0`, { signal } )
-              .then( res => res.json() )
-              .then( res => {
-                  if( !res.ok || res.errors )  {
-                      const error = res.msg || res.errors[0].msg;
-                      handleHasError( error );
-                      return;
-                  }
-                  handleIsSuccessful( true );
-      
-                  const groups = res.groups.filter( group => group.created_by === auth.id );
-                  handleSetGroups( groups );
-              })
-              .catch( err => {
-                  handleHasError( err );
-              })
-              .finally( () => {
-                  handleIsLoading( false );
-              })
-          
+
+            handleIsLoading(true);
+            handleHasError(null);
+            handleIsSuccessful(false);
+
+            fetch(`${ENDPOINT}/api/groups/?limit=5&from=0`, { signal })
+                .then(res => res.json())
+                .then(res => {
+                    if (!res.ok || res.errors) {
+                        const error = res.msg || res.errors[0].msg;
+                        handleHasError(error);
+                        return;
+                    }
+                    handleIsSuccessful(true);
+
+                    const groups = res.groups.filter(
+                        group => group.created_by === auth.id
+                    );
+                    handleSetGroups(groups);
+                    console.log(groups);
+                })
+                .catch(err => {
+                    if (typeof err === 'object') return;
+                    handleHasError(err);
+                })
+                .finally(() => {
+                    handleIsLoading(false);
+                });
         }
 
         return () => controller.abort();
-    }, [])
-    
+    }, []);
 
     const handleToggleModal = () => {
-        setIsModalOpen( prev => !prev );
-    }
+        setIsModalOpen(prev => !prev);
+    };
 
-    const handleCreateGroup = ( name ) => {
-        handleIsLoading( true );
-        handleHasError( null );
-        handleIsSuccessful( false );
+    const handleCreateGroup = name => {
+        handleIsLoading(true);
+        handleHasError(null);
+        handleIsSuccessful(false);
 
-        fetch( `${ ENDPOINT }/api/groups`, {
+        fetch(`${ENDPOINT}/api/groups`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-token': localStorage.getItem( 'x-token' )
+                'x-token': localStorage.getItem('x-token')
             },
             body: JSON.stringify({ name })
-        } )
-            .then( res => res.json() )
-            .then( res => {
-                if( !res.ok || res.errors ) {
+        })
+            .then(res => res.json())
+            .then(res => {
+                if (!res.ok || res.errors) {
                     const error = res.msg || res.errors[0].msg;
-                    handleHasError( error );
-                    setIsSnackbarOpen( true );
+                    handleHasError(error);
+                    setIsSnackbarOpen(true);
                     return;
                 }
-                handleAddGroup( res.group );
-                setIsSnackbarOpen( true );
+                handleAddGroup(res.group);
+                setIsSnackbarOpen(true);
             })
-            .catch( ( err ) => {
-                handleHasError( err );
-                setIsSnackbarOpen( true );
+            .catch(err => {
+                handleHasError(err);
+                setIsSnackbarOpen(true);
             })
-            .finally( () => {
-                handleIsLoading( false );
-            })
-    }
+            .finally(() => {
+                handleIsLoading(false);
+            });
+    };
 
     return (
         <>
@@ -100,7 +111,7 @@ export const GroupsPage = () => {
                     flexDirection: 'column',
                     width: '100%',
                     minHeight: '100%',
-                    bgcolor: '#E5E5E5',
+                    bgcolor: '#E5E5E5'
                 }}
             >
                 <Box
@@ -110,7 +121,7 @@ export const GroupsPage = () => {
                         alignItems: 'center',
                         gap: 3,
                         ml: 4,
-                        py: 2,
+                        py: 2
                     }}
                 >
                     <Typography component="h2" variant="h5">
@@ -124,37 +135,43 @@ export const GroupsPage = () => {
                         Groups
                     </Typography>
                     <Button
-                        onClick={ handleToggleModal }
+                        onClick={handleToggleModal}
                         variant="contained"
                         color="primary"
-                        disabled={ isLoading }
+                        disabled={isLoading}
                         sx={{ display: 'flex', ml: 'auto', mr: 2 }}
                     >
-                        { isLoading ? 'Loading...' : 'Add group' }
+                        {isLoading ? 'Loading...' : 'Add group'}
                     </Button>
                 </Box>
 
-                {
-                    hasError && (
-                        <>
-                            <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
-                                <Box sx={{ width: '100%' }}>
-                                    <Alert severity='error'>{ hasError }</Alert>
-                                </Box>
-                            </Snackbar>
-                        </>
-                    )
-                }
-
-                {
-                    isSuccessful && (
-                        <Snackbar open={ isSnackbarOpen } autoHideDuration={ 4000 } onClose={ () => setIsSnackbarOpen( false ) }>
+                {hasError && (
+                    <>
+                        <Snackbar
+                            open={isSnackbarOpen}
+                            autoHideDuration={4000}
+                            onClose={() => setIsSnackbarOpen(false)}
+                        >
                             <Box sx={{ width: '100%' }}>
-                                <Alert severity='success'>Group created successfully</Alert>
+                                <Alert severity="error">{hasError}</Alert>
                             </Box>
                         </Snackbar>
-                    )
-                }
+                    </>
+                )}
+
+                {isSuccessful && (
+                    <Snackbar
+                        open={isSnackbarOpen}
+                        autoHideDuration={4000}
+                        onClose={() => setIsSnackbarOpen(false)}
+                    >
+                        <Box sx={{ width: '100%' }}>
+                            <Alert severity="success">
+                                Group created successfully
+                            </Alert>
+                        </Box>
+                    </Snackbar>
+                )}
 
                 <Divider variant="middle" />
 
@@ -167,7 +184,7 @@ export const GroupsPage = () => {
                         bgcolor: '#FAFAFA',
                         borderRadius: 1,
                         mx: 2,
-                        mb: 1,
+                        mb: 1
                     }}
                 >
                     <Box
@@ -175,7 +192,7 @@ export const GroupsPage = () => {
                             display: 'flex',
                             flexDirection: 'row',
                             justifyContent: 'space-between',
-                            margin: 2,
+                            margin: 2
                         }}
                     >
                         <Box
@@ -183,7 +200,7 @@ export const GroupsPage = () => {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                gap: 1,
+                                gap: 1
                             }}
                         >
                             <Typography component="p" sx={{ fontSize: '1rem' }}>
@@ -207,7 +224,7 @@ export const GroupsPage = () => {
                                 display: 'flex',
                                 flexDirection: 'row',
                                 alignItems: 'center',
-                                gap: 1,
+                                gap: 1
                             }}
                         >
                             <Typography component="p" sx={{ fontSize: '1rem' }}>
@@ -221,16 +238,15 @@ export const GroupsPage = () => {
                     <Divider variant="middle" />
 
                     <TableData />
-
                 </Box>
             </Box>
 
-            <Modal 
-                isOpen={ isModalOpen } 
-                handleToggleModal={ handleToggleModal } 
+            <Modal
+                isOpen={isModalOpen}
+                handleToggleModal={handleToggleModal}
                 title="Add group"
                 inputLabel="Group"
-                onSubmit={ handleCreateGroup }
+                onSubmit={handleCreateGroup}
             />
         </>
     );
