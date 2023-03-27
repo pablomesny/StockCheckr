@@ -46,7 +46,7 @@ const rows = [
 // Titles received as params will be the headers of the table. They should be passed as an array.
 // Rows received as params will be part the body of the table. They should be passed as object/arrays.
 
-export const TableData = ({ /* titles, rows */ }) => {
+export const TableData = ({ titles, data }) => {
   return (
     <Box sx={{ mx: 2, mt: 2 }}>
       <TableContainer component={Paper}>
