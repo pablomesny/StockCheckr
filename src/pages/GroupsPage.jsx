@@ -51,11 +51,9 @@ export const GroupsPage = () => {
                         group => group.created_by === auth.id
                     );
                     handleSetGroups(groups);
-                    console.log(groups);
                 })
                 .catch(err => {
-                    if (typeof err === 'object') return;
-                    handleHasError(err);
+                    handleHasError( String(err) );
                 })
                 .finally(() => {
                     handleIsLoading(false);

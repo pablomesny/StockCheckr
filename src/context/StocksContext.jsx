@@ -32,10 +32,15 @@ export const StocksProvider = ({ children }) => {
       })
     }
 
+    const handleResetStocks = () => {
+      setStocks( initialValues );
+    }
+
     const value = {
       stocks,
       handleSetGroups,
-      handleAddGroup
+      handleAddGroup,
+      handleResetStocks
     }
 
   return (
