@@ -34,7 +34,7 @@ export const useForm = ( initialState = {} ) => {
         if( name === 'password' ) {
             setIsInputValid( (prev) => ({
                 ...prev,
-                isPasswordValid: ( value.length > 8 )
+                isPasswordValid: ( value.length >= 8 )
             }))
 
             return;

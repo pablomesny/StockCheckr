@@ -7,3 +7,4 @@ export * from './RegisterForm';
 export * from './TableData';
 export * from './Modal';
 export * from './ConfirmationModal';
+export * from './TableRowList';

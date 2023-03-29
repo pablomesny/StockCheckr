@@ -39,7 +39,6 @@ export const RegisterForm = () => {
             } )
                 .then( res => res.json() )
                 .then( ( res ) => {
-                    console.log(res);
                     if( !res.ok || res.errors ) {
                         const error = res.msg || res.errors[0].msg;
                         handleHasError( error );
