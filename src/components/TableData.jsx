@@ -11,6 +11,7 @@ import {
   TablePagination,
   Box
 } from '@mui/material';
+import { TableRowList } from './TableRowList';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -19,7 +20,7 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
   },
   [`&.${tableCellClasses.body}`]: {
     fontSize: 14
-  }
+  },
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -43,34 +44,37 @@ const rows = [
   createData('Gingerbread', 356, 16.0, 49, 3.9)
 ];
 
-// Titles received as params will be the headers of the table. They should be passed as an array.
+// Columns received as params will be the headers of the table. They should be passed as an array.
 // Rows received as params will be part the body of the table. They should be passed as object/arrays.
 
-export const TableData = ({ titles, data }) => {
+export const TableData = ({ columns, data }) => {
   return (
     <Box sx={{ mx: 2, mt: 2 }}>
       <TableContainer component={Paper}>
         <Table aria-label="customized table">
           <TableHead>
             <TableRow>
-              <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-              <StyledTableCell align="right">Calories</StyledTableCell>
-              <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-              <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+              {
+                columns.map( ( column, i ) => {
+                  if( i >= 1 ){
+                    return <StyledTableCell key={ column } align="right">{ column }</StyledTableCell>
+                  } else {
+                    return <StyledTableCell key={ column }>{ column }</StyledTableCell>
+                  }
+                })
+              }
             </TableRow>
           </TableHead>
           <TableBody>
             {
-              rows.map(row => (
-                <StyledTableRow key={row.name}>
+              data.map( row => (
+                <StyledTableRow key={row.id}>
                   <StyledTableCell component="th" scope="row">
-                    {row.name}
+                    { row.name }
                   </StyledTableCell>
-                  <StyledTableCell align="right">{row.calories}</StyledTableCell>
-                  <StyledTableCell align="right">{row.fat}</StyledTableCell>
-                  <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-                  <StyledTableCell align="right">{row.protein}</StyledTableCell>
+                  <TableRowList
+                    data={ row.state }
+                  />
                 </StyledTableRow>
               ))
             }

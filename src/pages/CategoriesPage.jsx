@@ -117,7 +117,7 @@ export const CategoriesPage = () => {
 
                     <Divider variant="middle" />
 
-                    <TableData />
+                    {/* <TableData /> */}
                 </Box>
             </Box>
 

@@ -47,9 +47,11 @@ export const GroupsPage = () => {
                     }
                     handleIsSuccessful(true);
 
-                    const groups = res.groups.filter(
-                        group => group.created_by === auth.id
-                    );
+                    const groups = res.groups.filter( group => group.created_by === auth.id )
+                                                .map( group => {
+                                                    const { created_by, ...rest } = group;
+                                                    return rest;
+                                                });
                     handleSetGroups(groups);
                 })
                 .catch(err => {
@@ -235,7 +237,10 @@ export const GroupsPage = () => {
 
                     <Divider variant="middle" />
 
-                    <TableData />
+                    <TableData 
+                        columns={[ 'Name', 'Status', 'Actions' ]}
+                        data={ groups }
+                    />
                 </Box>
             </Box>
 

@@ -117,7 +117,7 @@ export const AttributesPage = () => {
 
                     <Divider variant="middle" />
 
-                    <TableData />
+                    {/* <TableData /> */}
                 </Box>
             </Box>
 

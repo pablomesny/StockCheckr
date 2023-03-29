@@ -116,7 +116,7 @@ export const BrandsPage = () => {
 
           <Divider variant="middle" />
 
-          <TableData />
+          {/* <TableData /> */}
         </Box>
       </Box>
 

@@ -116,7 +116,7 @@ export const ProductsPage = () => {
 
           <Divider variant="middle" />
 
-          <TableData />
+          {/* <TableData /> */}
         </Box>
       </Box>
 
