@@ -145,33 +145,37 @@ export const GroupsPage = () => {
                     </Button>
                 </Box>
 
-                {hasError && (
-                    <>
+                {
+                    hasError && (
+                        <>
+                            <Snackbar
+                                open={isSnackbarOpen}
+                                autoHideDuration={4000}
+                                onClose={() => setIsSnackbarOpen(false)}
+                            >
+                                <Box sx={{ width: '100%' }}>
+                                    <Alert severity="error">{hasError}</Alert>
+                                </Box>
+                            </Snackbar>
+                        </>
+                    )
+                }
+
+                {
+                    isSuccessful && (
                         <Snackbar
                             open={isSnackbarOpen}
                             autoHideDuration={4000}
                             onClose={() => setIsSnackbarOpen(false)}
                         >
                             <Box sx={{ width: '100%' }}>
-                                <Alert severity="error">{hasError}</Alert>
+                                <Alert severity="success">
+                                    Group created successfully
+                                </Alert>
                             </Box>
                         </Snackbar>
-                    </>
-                )}
-
-                {isSuccessful && (
-                    <Snackbar
-                        open={isSnackbarOpen}
-                        autoHideDuration={4000}
-                        onClose={() => setIsSnackbarOpen(false)}
-                    >
-                        <Box sx={{ width: '100%' }}>
-                            <Alert severity="success">
-                                Group created successfully
-                            </Alert>
-                        </Box>
-                    </Snackbar>
-                )}
+                    )
+                }
 
                 <Divider variant="middle" />
 
@@ -240,6 +244,7 @@ export const GroupsPage = () => {
                     <TableData 
                         columns={[ 'Name', 'Status', 'Actions' ]}
                         data={ groups }
+                        type='state'
                     />
                 </Box>
             </Box>
