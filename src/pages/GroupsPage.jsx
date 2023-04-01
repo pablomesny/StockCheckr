@@ -91,6 +91,7 @@ export const GroupsPage = () => {
                     return;
                 }
                 handleAddGroup(res.group);
+                handleIsSuccessful( true );
                 setIsSnackbarOpen(true);
             })
             .catch(err => {
