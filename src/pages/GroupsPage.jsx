@@ -48,8 +48,6 @@ export const GroupsPage = () => {
                         handleToggleSnackbar();
                         return;
                     }
-                    handleIsSuccessful(true);
-
                     const groups = res.groups.filter( group => group.created_by === auth.id )
                                                 .map( group => {
                                                     const { created_by, ...rest } = group;
@@ -103,11 +101,12 @@ export const GroupsPage = () => {
                 }
                 handleAddGroup(res.group);
                 handleIsSuccessful( true );
+                setSnackbarMessage( 'Group created successfully' );
                 setIsSnackbarOpen(true);
             })
             .catch(err => {
                 handleHasError(err);
-                setSnackbarMessage( 'Error while creating group' )
+                setSnackbarMessage( 'Error while creating group' );
                 handleToggleSnackbar();
             })
             .finally(() => {
@@ -160,30 +159,23 @@ export const GroupsPage = () => {
 
                 {
                     hasError && (
-                        <>
-                            <SnackbarAlert 
-                                isSnackbarOpen={ isSnackbarOpen }
-                                handleToggleSnackbar={ handleToggleSnackbar }
-                                message={ snackbarMessage }
-                                type='error'
-                            />
-                        </>
+                        <SnackbarAlert 
+                            isSnackbarOpen={ isSnackbarOpen }
+                            handleToggleSnackbar={ handleToggleSnackbar }
+                            message={ snackbarMessage }
+                            type='error'
+                        />
                     )
                 }
 
                 {
                     isSuccessful && (
-                        <Snackbar
-                            open={isSnackbarOpen}
-                            autoHideDuration={4000}
-                            onClose={() => setIsSnackbarOpen(false)}
-                        >
-                            <Box sx={{ width: '100%' }}>
-                                <Alert severity="success">
-                                    Group created successfully
-                                </Alert>
-                            </Box>
-                        </Snackbar>
+                        <SnackbarAlert 
+                            isSnackbarOpen={ isSnackbarOpen }
+                            handleToggleSnackbar={ handleToggleSnackbar }
+                            message={ snackbarMessage }
+                            type='success'
+                        />
                     )
                 }
 
