@@ -8,7 +8,7 @@ import { useFetch } from "../hooks";
 import { StocksContext } from "../context";
 import { SnackbarAlert } from "./SnackbarAlert";
 
-// TODO: fix pointer events after edit and context update on delete
+// TODO: fix pointer events after update
 
 export const TableRowItem = ({ row }) => {
 
@@ -27,10 +27,6 @@ export const TableRowItem = ({ row }) => {
 
     const handleToggleModal = () => {
         setIsModalOpen( prev => !prev );
-    }
-
-    const handleToggleEditMode = () => {
-        setIsEditable( prev => !prev );
     }
 
     const handleToggleSnackbar = () => {
@@ -238,10 +234,8 @@ export const TableRowItem = ({ row }) => {
                     isOpen={ isModalOpen }
                     handleToggleModal={ handleToggleModal }
                     title="Delete group"
-                    description={ 
-                        `Do you really want to delete "${ name }"?\n
-                        WARNING: All the information relationed with this group will also be deleted` 
-                    }
+                    description={ `Do you really want to delete "${ name }" ?` }
+                    warning="All the information relationed with this group will also be deleted (including products)."
                     onSubmit={ handleDeleteGroup }
                 />
         }
