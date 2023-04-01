@@ -35,9 +35,22 @@ export const StocksProvider = ({ children }) => {
     const handleDeleteGroup = ( id ) => {
       setStocks({
         ...stocks,
-        groups: [
-          stocks.groups.filter( group => group.id !== id )
-        ]
+        groups: stocks.groups.filter( group => group.id !== id )
+      })
+    }
+
+    const handleUpdateGroup = ( group ) => {
+
+      const { id } = group;
+
+      setStocks({
+        ...stocks,
+        groups: stocks.groups.map( item => {
+          if( item.id === id ) {
+            return group;
+          }
+          return item;
+        })
       })
     }
 
@@ -50,7 +63,8 @@ export const StocksProvider = ({ children }) => {
       handleSetGroups,
       handleAddGroup,
       handleResetStocks,
-      handleDeleteGroup
+      handleDeleteGroup,
+      handleUpdateGroup
     }
 
   return (

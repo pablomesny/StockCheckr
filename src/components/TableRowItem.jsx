@@ -8,6 +8,8 @@ import { useFetch } from "../hooks";
 import { StocksContext } from "../context";
 import { SnackbarAlert } from "./SnackbarAlert";
 
+// TODO: fix pointer events after edit and context update on delete
+
 export const TableRowItem = ({ row }) => {
 
     const [ rowData, setRowData ] = useState( row );
@@ -16,7 +18,7 @@ export const TableRowItem = ({ row }) => {
     const [ isSnackbarOpen, setIsSnackbarOpen ] = useState( false );
     const [ snackbarMessage, setSnackbarMessage ] = useState('');
 
-    const { handleDeleteGroup: handleDeleteGroupFromContext } = useContext( StocksContext );
+    const { handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( StocksContext );
 
     const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
 
@@ -67,7 +69,7 @@ export const TableRowItem = ({ row }) => {
                     return;
                 }
 
-                // handleDeleteGroupFromContext( id );
+                handleDeleteGroupFromContext( id );
                 handleIsSuccessful( true );
                 setSnackbarMessage( `Group ${ name } deleted successfully` );
                 handleToggleSnackbar();
@@ -81,6 +83,49 @@ export const TableRowItem = ({ row }) => {
             .finally( () => {
                 handleIsLoading( false );
                 handleToggleModal();
+            })
+    }
+
+    const handleUpdateGroup = () => {
+
+        handleIsLoading( true );
+        handleHasError( null );
+        handleIsSuccessful( false );
+
+        fetch( `${ ENDPOINT }/api/groups/${ id }`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'x-token': localStorage.getItem( TOKEN_LOCALSTORAGE )
+            },
+            body: JSON.stringify( rowData )
+        })
+            .then( res => res.json() )
+            .then( res => {
+                if( !res.ok || res.errors ){
+                    const error = res.msg || res.errors[0].msg;
+                    handleHasError( error );
+                    setSnackbarMessage( error );
+                    handleToggleSnackbar();
+                    setRowData( row );
+                    return;
+                }
+
+                handleUpdateGroupFromContext( rowData );
+                handleIsSuccessful( true );
+                setSnackbarMessage( `Group "${ name }" successfully updated` );
+                handleToggleSnackbar();
+            })
+            .catch( err => {
+                console.log(err);
+                handleHasError( err );
+                setSnackbarMessage( `Error updating group "${ name }"` )
+                handleToggleSnackbar();
+                setRowData( row );
+            })
+            .finally( () => {
+                handleIsLoading( false )
+                setIsEditable( false );
             })
     }
 
@@ -111,10 +156,10 @@ export const TableRowItem = ({ row }) => {
                             </Select>
                         </StyledTableCell>
                         <StyledTableCell align="right">
-                            <IconButton>
+                            <IconButton disabled={ isLoading } onClick={ handleUpdateGroup }>
                                 <CheckRounded />
                             </IconButton>
-                            <IconButton onClick={ handleToggleEditMode }>
+                            <IconButton disabled={ isLoading } onClick={ () => setIsEditable( false ) }>
                                 <CloseRounded />
                             </IconButton>
                         </StyledTableCell>
@@ -147,22 +192,14 @@ export const TableRowItem = ({ row }) => {
                                 </Box>
                             </StyledTableCell>
                             <StyledTableCell align="right">
-                                <IconButton onClick={ handleToggleEditMode }>
+                                <IconButton disabled={ isLoading } onClick={ () => setIsEditable( true ) }>
                                     <EditRounded />
                                 </IconButton>
-                                <IconButton onClick={ handleToggleModal } disabled={ isLoading }>
+                                <IconButton disabled={ isLoading } onClick={ handleToggleModal }>
                                     <DeleteForeverRounded />
                                 </IconButton>
                             </StyledTableCell>
                         </StyledTableRow>
-
-                        <ConfirmationModal
-                            isOpen={ isModalOpen }
-                            handleToggleModal={ handleToggleModal }
-                            title="Delete group"
-                            description={ `Do you really want to delete "${ name }"?. All the information relationed with this group will also be deleted` }
-                            onSubmit={ handleDeleteGroup }
-                        />
                     </>
                 )
         }
@@ -193,6 +230,20 @@ export const TableRowItem = ({ row }) => {
                         />
                     </td>
                 </tr>
+        }
+
+        {
+            isModalOpen &&
+                <ConfirmationModal
+                    isOpen={ isModalOpen }
+                    handleToggleModal={ handleToggleModal }
+                    title="Delete group"
+                    description={ 
+                        `Do you really want to delete "${ name }"?\n
+                        WARNING: All the information relationed with this group will also be deleted` 
+                    }
+                    onSubmit={ handleDeleteGroup }
+                />
         }
     </>
   )

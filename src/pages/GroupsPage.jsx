@@ -13,10 +13,12 @@ import { Modal } from '../components';
 import { TableData } from '../components/TableData';
 import { AuthContext, StocksContext } from '../context';
 import { ENDPOINT } from '../utils';
+import { SnackbarAlert } from '../components/SnackbarAlert';
 
 export const GroupsPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
+    const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
 
     const { stocks, handleAddGroup, handleSetGroups } = useContext(StocksContext);
     const { auth } = useContext(AuthContext);
@@ -43,6 +45,7 @@ export const GroupsPage = () => {
                     if (!res.ok || res.errors) {
                         const error = res.msg || res.errors[0].msg;
                         handleHasError(error);
+                        handleToggleSnackbar();
                         return;
                     }
                     handleIsSuccessful(true);
@@ -55,7 +58,10 @@ export const GroupsPage = () => {
                     handleSetGroups(groups);
                 })
                 .catch(err => {
+                    console.log(err);
                     handleHasError( String(err) );
+                    setSnackbarMessage( 'Error while downloading groups data' );
+                    handleToggleSnackbar();
                 })
                 .finally(() => {
                     handleIsLoading(false);
@@ -68,6 +74,10 @@ export const GroupsPage = () => {
     const handleToggleModal = () => {
         setIsModalOpen(prev => !prev);
     };
+
+    const handleToggleSnackbar = () => {
+        setIsSnackbarOpen( prev => !prev );
+    }
 
     const handleCreateGroup = name => {
         handleIsLoading(true);
@@ -87,6 +97,7 @@ export const GroupsPage = () => {
                 if (!res.ok || res.errors) {
                     const error = res.msg || res.errors[0].msg;
                     handleHasError(error);
+                    setSnackbarMessage( error );
                     setIsSnackbarOpen(true);
                     return;
                 }
@@ -96,7 +107,8 @@ export const GroupsPage = () => {
             })
             .catch(err => {
                 handleHasError(err);
-                setIsSnackbarOpen(true);
+                setSnackbarMessage( 'Error while creating group' )
+                handleToggleSnackbar();
             })
             .finally(() => {
                 handleIsLoading(false);
@@ -149,15 +161,12 @@ export const GroupsPage = () => {
                 {
                     hasError && (
                         <>
-                            <Snackbar
-                                open={isSnackbarOpen}
-                                autoHideDuration={4000}
-                                onClose={() => setIsSnackbarOpen(false)}
-                            >
-                                <Box sx={{ width: '100%' }}>
-                                    <Alert severity="error">{hasError}</Alert>
-                                </Box>
-                            </Snackbar>
+                            <SnackbarAlert 
+                                isSnackbarOpen={ isSnackbarOpen }
+                                handleToggleSnackbar={ handleToggleSnackbar }
+                                message={ snackbarMessage }
+                                type='error'
+                            />
                         </>
                     )
                 }
