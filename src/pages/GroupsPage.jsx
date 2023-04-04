@@ -39,7 +39,7 @@ export const GroupsPage = () => {
             handleHasError(null);
             handleIsSuccessful(false);
 
-            fetch(`${ENDPOINT}/api/groups/?limit=5&from=0`, { signal })
+            fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=5&from=0`, { signal })
                 .then(res => res.json())
                 .then(res => {
                     if (!res.ok || res.errors) {
@@ -48,8 +48,7 @@ export const GroupsPage = () => {
                         handleToggleSnackbar();
                         return;
                     }
-                    const groups = res.groups.filter( group => group.created_by === auth.id )
-                                                .map( group => {
+                    const groups = res.groups.map( group => {
                                                     const { created_by, ...rest } = group;
                                                     return rest;
                                                 });
