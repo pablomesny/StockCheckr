@@ -9,12 +9,16 @@ export const useForm = ( initialState = {} ) => {
         doesPasswordsMatch: true
     });
 
-    const onInputChange = ({ target }) => {
+    const handleInputChange = ({ target }) => {
         const { name, value } = target;
         setFormData({
             ...formData,
             [ name ]: value
         })
+    }
+
+    const handleResetForm = () => {
+        setFormData( initialState );
     }
 
     const handleInputValidation = ({ target }) => {
@@ -60,7 +64,8 @@ export const useForm = ( initialState = {} ) => {
   return {
     formData,
     isInputValid,
-    onInputChange,
+    handleInputChange,
+    handleResetForm,
     handleInputValidation,
     handlePasswordMatch
   }

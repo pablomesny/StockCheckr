@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
-import { useFetch, useForm } from "../hooks";
+import { useFetchStatus, useForm } from "../hooks";
 import { ENDPOINT, TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
 import { AuthContext } from "../context";
 
@@ -13,15 +13,15 @@ const initialState = {
 
 export const LoginForm = () => {
 
-    const { formData, onInputChange } = useForm( initialState );
-    const { fetchState, handleHasError, handleIsLoading } = useFetch();
+    const { formData, handleInputChange } = useForm( initialState );
+    const { fetchStatus, handleHasError, handleIsLoading } = useFetchStatus();
 
     const [ isSecured, setIsSecured ] = useState(true);
 
     const { auth, handleChangeAuth } = useContext( AuthContext );
 
     const { email, password } = formData;
-    const { isLoading, hasError } = fetchState;
+    const { isLoading, hasError } = fetchStatus;
 
     const handleLogin = () => {
         handleIsLoading( true );
@@ -85,7 +85,7 @@ export const LoginForm = () => {
                     placeholder="your@email.com"
                     name="email"
                     value={ email }
-                    onChange={ onInputChange }
+                    onChange={ handleInputChange }
                     />
                 </Grid>
 
@@ -113,7 +113,7 @@ export const LoginForm = () => {
                     placeholder="Password"
                     name="password"
                     value={ password }
-                    onChange={ onInputChange }
+                    onChange={ handleInputChange }
                     />
                 </Grid>
 

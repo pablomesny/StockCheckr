@@ -1,116 +1,30 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext,  useState } from 'react';
 import {
-    Alert,
     Box,
     Button,
     Divider,
-    Snackbar,
     TextField,
     Typography
 } from '@mui/material';
-import { useFetch } from '../hooks';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
-import { AuthContext, StocksContext } from '../context';
-import { ENDPOINT } from '../utils';
+import { StocksContext } from '../context';
 import { SnackbarAlert } from '../components/SnackbarAlert';
+import { useFetchGroups } from '../hooks/useFetchGroups';
 
 export const GroupsPage = () => {
+
+    const { fetchStatus, isSnackbarOpen, snackbarMessage, handleCreateGroup, handleToggleSnackbar } = useFetchGroups();
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
-    const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
 
-    const { stocks, handleAddGroup, handleSetGroups } = useContext(StocksContext);
-    const { auth } = useContext(AuthContext);
+    const { stocks } = useContext(StocksContext);
 
-    const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
-
-    const { isLoading, hasError, isSuccessful } = fetchState;
+    const { isLoading, hasError, isSuccessful } = fetchStatus;
     const { groups } = stocks;
-
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        if (groups.length === 0) {
-            const { signal } = controller;
-
-            handleIsLoading(true);
-            handleHasError(null);
-            handleIsSuccessful(false);
-
-            fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=5&from=0`, { signal })
-                .then(res => res.json())
-                .then(res => {
-                    if (!res.ok || res.errors) {
-                        const error = res.msg || res.errors[0].msg;
-                        handleHasError(error);
-                        handleToggleSnackbar();
-                        return;
-                    }
-                    const groups = res.groups.map( group => {
-                                                    const { created_by, ...rest } = group;
-                                                    return rest;
-                                                });
-                    handleSetGroups(groups);
-                })
-                .catch(err => {
-                    console.log(err);
-                    handleHasError( String(err) );
-                    setSnackbarMessage( 'Error while downloading groups data' );
-                    handleToggleSnackbar();
-                })
-                .finally(() => {
-                    handleIsLoading(false);
-                });
-        }
-
-        return () => controller.abort();
-    }, []);
 
     const handleToggleModal = () => {
         setIsModalOpen(prev => !prev);
-    };
-
-    const handleToggleSnackbar = () => {
-        setIsSnackbarOpen( prev => !prev );
-    }
-
-    const handleCreateGroup = name => {
-        handleIsLoading(true);
-        handleHasError(null);
-        handleIsSuccessful(false);
-
-        fetch(`${ENDPOINT}/api/groups`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-token': localStorage.getItem('x-token')
-            },
-            body: JSON.stringify({ name })
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (!res.ok || res.errors) {
-                    const error = res.msg || res.errors[0].msg;
-                    handleHasError(error);
-                    setSnackbarMessage( error );
-                    setIsSnackbarOpen(true);
-                    return;
-                }
-                handleAddGroup(res.group);
-                handleIsSuccessful( true );
-                setSnackbarMessage( 'Group created successfully' );
-                setIsSnackbarOpen(true);
-            })
-            .catch(err => {
-                handleHasError(err);
-                setSnackbarMessage( 'Error while creating group' );
-                handleToggleSnackbar();
-            })
-            .finally(() => {
-                handleIsLoading(false);
-            });
     };
 
     return (

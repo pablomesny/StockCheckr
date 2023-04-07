@@ -1,10 +1,7 @@
 import {
-    styled,
     TableBody,
-    TableCell,
-    tableCellClasses,
     TableHead,
-    TableRow,
+    TableRow
 } from '@mui/material';
 import { StyledTableCell } from '../helpers';
 import { TableRowItem } from './TableRowItem';

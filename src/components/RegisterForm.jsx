@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Alert, Box, Button, Grid, IconButton, InputAdornment, TextField, Typography } from "@mui/material"
 import { Visibility, VisibilityOff } from "@mui/icons-material"
 import { ENDPOINT } from "../utils";
-import { useFetch, useForm } from "../hooks";
+import { useFetchStatus, useForm } from "../hooks";
 
 const initialState = {
     username: '',
@@ -14,8 +14,8 @@ const initialState = {
 
 export const RegisterForm = () => {
 
-    const { formData, isInputValid, onInputChange, handleInputValidation, handlePasswordMatch } = useForm( initialState );
-    const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetch();
+    const { formData, isInputValid, handleInputChange, handleInputValidation, handlePasswordMatch } = useForm( initialState );
+    const { fetchStatus, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetchStatus();
 
     const [ isSecured, setIsSecured ] = useState({
         password: true,
@@ -24,7 +24,7 @@ export const RegisterForm = () => {
     
     const { username, email, password, passwordCheck } = formData;
     const { isPasswordValid, isEmailValid, doesPasswordsMatch } = isInputValid;
-    const { isLoading, hasError, isSuccessful } = fetchState;
+    const { isLoading, hasError, isSuccessful } = fetchStatus;
 
     const handleCreateUser = () => {
         handleStartFetching();
@@ -82,7 +82,7 @@ export const RegisterForm = () => {
                         placeholder="Username"
                         name="username"
                         value={ username }
-                        onChange={ onInputChange }
+                        onChange={ handleInputChange }
                     />
                 </Grid>
 
@@ -99,7 +99,7 @@ export const RegisterForm = () => {
                         name="email"
                         helperText={ isEmailValid ? '' : 'Email is not valid' }
                         value={ email }
-                        onChange={ onInputChange }
+                        onChange={ handleInputChange }
                         onBlur={ handleInputValidation }
                     />
                 </Grid>
@@ -133,7 +133,7 @@ export const RegisterForm = () => {
                             )
                         }}
                         value={ password }
-                        onChange={ onInputChange }
+                        onChange={ handleInputChange }
                         onBlur={ handleInputValidation }
                     />
                 </Grid>
@@ -167,7 +167,7 @@ export const RegisterForm = () => {
                         value={ passwordCheck }
                         error={ !doesPasswordsMatch }
                         helperText={ doesPasswordsMatch ? '' : 'Passwords do not match' }
-                        onChange={ onInputChange }
+                        onChange={ handleInputChange }
                         onBlur={ () => handlePasswordMatch( password, passwordCheck ) }
                     />
                 </Grid>
