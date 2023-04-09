@@ -20,7 +20,7 @@ export const GroupsProvider = ({ children }) => {
 
     const handleAddGroup = ( group ) => {
       setGroups( prev => ({
-        total: total + 1,
+        total: prev.total + 1,
         items: [
           ...prev.items,
           group
