@@ -2,34 +2,38 @@ import {
   TableContainer,
   Table,
   Paper,
-  Box
+  Box,
+  TablePagination
 } from '@mui/material';
 import { TableRowList } from './TableRowList';
 
 // Columns received as params will be the headers of the table. They should be passed as an array.
 // Data received as params will be part the body of the table. They should be passed as object.
 
-export const TableData = ({ columns = [], data, type = '' }) => {
+export const TableData = ({ columns = [], data, type = '', fetchStatus, handleDelete, handleUpdate, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
   return (
     <Box sx={{ mx: 2, mt: 2 }}>
       <TableContainer component={Paper}>
-        <Table aria-label="customized table">
+        <Table size="small" aria-label="customized table">
           <TableRowList 
             data={ data }
             columns={ columns }
             type={ type }
+            fetchStatus={ fetchStatus }
+            handleDelete={ handleDelete }
+            handleUpdate={ handleUpdate }
           />
         </Table>
       </TableContainer>
-      {/* <TablePagination
-                rowsPerPageOptions={[5, 10, 25]}
-                component="div"
-                // count={rows.length}
-                rowsPerPage={ 5 }
-                page={ 1 }
-                // onPageChange={handleChangePage}
-                // onRowsPerPageChange={handleChangeRowsPerPage}
-            /> */}
+      <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={ data.length }
+          rowsPerPage={ rowsPerPage }
+          page={ page }
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 };

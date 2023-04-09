@@ -11,12 +11,14 @@ import { TableData } from '../components/TableData';
 import { StocksContext } from '../context';
 import { SnackbarAlert } from '../components/SnackbarAlert';
 import { useFetchGroups } from '../hooks/useFetchGroups';
+import { useTablePages } from '../hooks';
 
 export const GroupsPage = () => {
 
-    const { fetchStatus, isSnackbarOpen, snackbarMessage, handleCreateGroup, handleToggleSnackbar } = useFetchGroups();
-
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = useTablePages();
+    const { fetchStatus, isSnackbarOpen, snackbarMessage, handleCreateGroup, handleDeleteGroup, handleUpdateGroup, handleToggleSnackbar } = useFetchGroups( page, rowsPerPage );
+    
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
 
     const { stocks } = useContext(StocksContext);
 
@@ -160,6 +162,13 @@ export const GroupsPage = () => {
                         columns={[ 'Name', 'Status', 'Actions' ]}
                         data={ groups }
                         type='state'
+                        fetchStatus={ fetchStatus }
+                        handleDelete={ handleDeleteGroup }
+                        handleUpdate={ handleUpdateGroup }
+                        page={ page }
+                        rowsPerPage={ rowsPerPage }
+                        handleChangePage={ handleChangePage }
+                        handleChangeRowsPerPage={ handleChangeRowsPerPage }
                     />
                 </Box>
             </Box>

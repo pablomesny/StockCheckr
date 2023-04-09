@@ -3,7 +3,7 @@ import { AuthContext, StocksContext } from "../context";
 import { useFetchStatus } from "./useFetchStatus";
 import { ENDPOINT, TOKEN_LOCALSTORAGE } from "../utils";
 
-export const useFetchGroups = () => {
+export const useFetchGroups = ( page, rowsPerPage ) => {
 
     const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
     const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
@@ -15,15 +15,26 @@ export const useFetchGroups = () => {
 
     const { groups } = stocks;
 
+    console.log({page});
+    console.log({rowsPerPage});
+
+    console.log(groups);
+
+
     useEffect(() => {
         const controller = new AbortController();
+
+        const limit = ( page * rowsPerPage ) + rowsPerPage;
+        const from = ( page * rowsPerPage );
+
+        console.log(limit, from);
 
         if (groups.length === 0) {
             const { signal } = controller;
 
             handleStartFetching();
 
-            fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=5&from=0`, { signal })
+            fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=${ limit }&from=${ from }`, { signal })
                 .then(res => res.json())
                 .then(res => {
                     if (!res.ok || res.errors) {
@@ -50,7 +61,7 @@ export const useFetchGroups = () => {
         }
 
         return () => controller.abort();
-    }, []);
+    }, [ page, rowsPerPage ]);
 
     const handleCreateGroup = ( name ) => {
         

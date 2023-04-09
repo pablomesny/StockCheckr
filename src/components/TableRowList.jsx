@@ -6,7 +6,7 @@ import {
 import { StyledTableCell } from '../helpers';
 import { TableRowItem } from './TableRowItem';
 
-export const TableRowList = ({ data, columns, type }) => {
+export const TableRowList = ({ data, columns, type, fetchStatus, handleDelete, handleUpdate }) => {
     return (
         <>
             {
@@ -42,6 +42,9 @@ export const TableRowList = ({ data, columns, type }) => {
                                     <TableRowItem
                                         key={ row.id } 
                                         row={ row }
+                                        fetchStatus={ fetchStatus }
+                                        handleDelete={ handleDelete }
+                                        handleUpdate={ handleUpdate }
                                     />
                                 ))
                             }
