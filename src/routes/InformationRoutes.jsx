@@ -1,13 +1,13 @@
 import { Box } from "@mui/material"
 import { Navigate, Route, Routes } from "react-router-dom"
 import { Navbar, Submenu } from "../components"
-import { StocksProvider } from "../context"
+import { GroupsProvider } from "../context"
 import { DashboardPage } from "../pages"
 import { ControlPanelRoutes } from "./ControlPanelRoutes"
 
 export const InformationRoutes = () => {
   return (
-    <StocksProvider>
+    <GroupsProvider>
       <Navbar />
 
       <Box 
@@ -23,6 +23,6 @@ export const InformationRoutes = () => {
         </Routes>
       </Box>
 
-    </StocksProvider>
+    </GroupsProvider>
   )
 }

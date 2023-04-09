@@ -1,42 +1,57 @@
-import { DeleteForeverRounded, EditRounded } from '@mui/icons-material';
-import { Box, IconButton, styled, TableCell, tableCellClasses, Typography } from '@mui/material';
-import { useState } from 'react';
+import {
+    TableBody,
+    TableHead,
+    TableRow
+} from '@mui/material';
+import { StyledTableCell } from '../helpers';
+import { TableRowItem } from './TableRowItem';
 
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-    [`&.${tableCellClasses.head}`]: {
-        backgroundColor: theme.palette.primary.main,
-        color: theme.palette.common.white
-    },
-    [`&.${tableCellClasses.body}`]: {
-        fontSize: 14
-    }
-}));
-
-export const TableRowList = ({ data }) => {
-
-    const [ editMode, setEditMode ] = useState( false );
-
-    const handleToggleEditMode = () => {
-        setEditMode( prev => !prev );
-    }
-
+export const TableRowList = ({ data, columns, type, fetchStatus, handleDelete, handleUpdate }) => {
     return (
         <>
-            <StyledTableCell align="right">
-                <Box sx={{ width: 'fit-content', px: 1, py: 0.5, ml: 'auto', borderRadius: 5, bgcolor: data ? 'green' : 'red' }}>
-                    <Typography variant='p' component='p' sx={{ color: 'white' }} >
-                        { data ? 'Active' : 'Inactive' }
-                    </Typography>
-                </Box>
-            </StyledTableCell>
-            <StyledTableCell align="right">
-                <IconButton onClick={ handleToggleEditMode }>
-                    <EditRounded />
-                </IconButton>
-                <IconButton>
-                    <DeleteForeverRounded />
-                </IconButton>
-            </StyledTableCell>
+            {
+                type === 'state' && (
+                    <>
+                        <TableHead>
+                            <TableRow>
+                                {
+                                    columns.map( ( column, i ) => {
+                                        if (i >= 1) {
+                                            return (
+                                                <StyledTableCell
+                                                    key={column}
+                                                    align="right"
+                                                >
+                                                    {column}
+                                                </StyledTableCell>
+                                            );
+                                        } else {
+                                            return (
+                                                <StyledTableCell key={column}>
+                                                    {column}
+                                                </StyledTableCell>
+                                            );
+                                        }
+                                    })
+                                }
+                            </TableRow>
+                        </TableHead>
+                        <TableBody>
+                            {
+                                data.map( row => (
+                                    <TableRowItem
+                                        key={ row.id } 
+                                        row={ row }
+                                        fetchStatus={ fetchStatus }
+                                        handleDelete={ handleDelete }
+                                        handleUpdate={ handleUpdate }
+                                    />
+                                ))
+                            }
+                        </TableBody>
+                    </>
+                )
+            }
         </>
     );
 };

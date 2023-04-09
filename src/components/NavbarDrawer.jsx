@@ -3,17 +3,19 @@ import { Link } from "react-router-dom";
 import { Box, Collapse, Container, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { AttachMoneyRounded, CloseRounded, ContentCopyRounded, ControlPointRounded, ExpandLessRounded, ExpandMoreRounded, FormatListBulletedRounded, StarBorder, TurnedInRounded, WorkspacesRounded } from "@mui/icons-material";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { AuthContext, StocksContext } from "../context";
+import { AuthContext } from "../context";
 import { TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
+import { handleResetStocks } from "../helpers";
 
 export const NavbarDrawer = ({ isOpen, handleToggleDrawer }) => {
 
   const { onLogout } = useContext( AuthContext );
-  const { handleResetStocks } = useContext( StocksContext );
 
   const [ isModalOpen, setIsModalOpen ] = useState( false );
   const [ isControlPanelOpen, setIsControlPanelOpen ] = useState( false );
   const [ isSalesOpen, setIsSalesOpen ] = useState( false );
+
+  const { handleResetStocks: handleResetData } = handleResetStocks();
 
   const handleToggleModal = () => {
     setIsModalOpen( prev => !prev );
@@ -23,7 +25,7 @@ export const NavbarDrawer = ({ isOpen, handleToggleDrawer }) => {
     localStorage.removeItem( USER_LOCALSTORAGE );
     localStorage.removeItem( TOKEN_LOCALSTORAGE );
     setIsModalOpen( false );
-    handleResetStocks();
+    handleResetData();
     onLogout();
   }
 

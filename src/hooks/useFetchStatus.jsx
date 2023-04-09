@@ -1,35 +1,35 @@
 import { useState } from 'react';
 
-export const useFetch = () => {
-  const [fetchState, setFetchState] = useState({
+export const useFetchStatus = () => {
+  const [fetchStatus, setFetchStatus] = useState({
     isLoading: false,
     hasError: null,
     isSuccessful: false
   });
 
   const handleIsLoading = bool => {
-    setFetchState( prev => ({
+    setFetchStatus( prev => ({
       ...prev,
       isLoading: bool
     }))
   };
 
   const handleHasError = error => {
-    setFetchState( prev => ({
+    setFetchStatus( prev => ({
       ...prev,
       hasError: error
     }));
   };
 
   const handleIsSuccessful = bool => {
-    setFetchState( prev => ({
+    setFetchStatus( prev => ({
       ...prev,
       isSuccessful: bool
     }));
   };
 
   const handleStartFetching = () => {
-    setFetchState( () => ({
+    setFetchStatus( () => ({
       isLoading: true,
       hasError: null,
       isSuccessful: false
@@ -37,7 +37,7 @@ export const useFetch = () => {
   }
 
   return {
-    fetchState,
+    fetchStatus,
     handleIsLoading,
     handleHasError,
     handleIsSuccessful,

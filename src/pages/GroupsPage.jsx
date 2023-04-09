@@ -1,105 +1,32 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext,  useState } from 'react';
 import {
-    Alert,
     Box,
     Button,
     Divider,
-    Snackbar,
     TextField,
     Typography
 } from '@mui/material';
-import { useFetch } from '../hooks';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
-import { AuthContext, StocksContext } from '../context';
-import { ENDPOINT } from '../utils';
+import { GroupsContext } from '../context';
+import { SnackbarAlert } from '../components/SnackbarAlert';
+import { useFetchGroups } from '../hooks/useFetchGroups';
+import { useTablePages } from '../hooks';
 
 export const GroupsPage = () => {
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isSnackbarOpen, setIsSnackbarOpen] = useState(false);
 
-    const { stocks, handleAddGroup, handleSetGroups } = useContext(StocksContext);
-    const { auth } = useContext(AuthContext);
+    const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = useTablePages();
+    const { fetchStatus, isSnackbarOpen, snackbarMessage, handleCreateGroup, handleDeleteGroup, handleUpdateGroup, handleToggleSnackbar } = useFetchGroups( page, rowsPerPage );
+    
+    const [ isModalOpen, setIsModalOpen ] = useState(false);
 
-    const { fetchState, handleIsLoading, handleHasError, handleIsSuccessful } = useFetch();
+    const { groups } = useContext(GroupsContext);
 
-    const { isLoading, hasError, isSuccessful } = fetchState;
-    const { groups } = stocks;
-
-
-    useEffect(() => {
-        const controller = new AbortController();
-
-        if (groups.length === 0) {
-            const { signal } = controller;
-
-            handleIsLoading(true);
-            handleHasError(null);
-            handleIsSuccessful(false);
-
-            fetch(`${ENDPOINT}/api/groups/?limit=5&from=0`, { signal })
-                .then(res => res.json())
-                .then(res => {
-                    if (!res.ok || res.errors) {
-                        const error = res.msg || res.errors[0].msg;
-                        handleHasError(error);
-                        return;
-                    }
-                    handleIsSuccessful(true);
-
-                    const groups = res.groups.filter( group => group.created_by === auth.id )
-                                                .map( group => {
-                                                    const { created_by, ...rest } = group;
-                                                    return rest;
-                                                });
-                    handleSetGroups(groups);
-                })
-                .catch(err => {
-                    handleHasError( String(err) );
-                })
-                .finally(() => {
-                    handleIsLoading(false);
-                });
-        }
-
-        return () => controller.abort();
-    }, []);
+    const { isLoading, hasError, isSuccessful } = fetchStatus;
+    const { items, total } = groups;
 
     const handleToggleModal = () => {
         setIsModalOpen(prev => !prev);
-    };
-
-    const handleCreateGroup = name => {
-        handleIsLoading(true);
-        handleHasError(null);
-        handleIsSuccessful(false);
-
-        fetch(`${ENDPOINT}/api/groups`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-token': localStorage.getItem('x-token')
-            },
-            body: JSON.stringify({ name })
-        })
-            .then(res => res.json())
-            .then(res => {
-                if (!res.ok || res.errors) {
-                    const error = res.msg || res.errors[0].msg;
-                    handleHasError(error);
-                    setIsSnackbarOpen(true);
-                    return;
-                }
-                handleAddGroup(res.group);
-                setIsSnackbarOpen(true);
-            })
-            .catch(err => {
-                handleHasError(err);
-                setIsSnackbarOpen(true);
-            })
-            .finally(() => {
-                handleIsLoading(false);
-            });
     };
 
     return (
@@ -145,33 +72,27 @@ export const GroupsPage = () => {
                     </Button>
                 </Box>
 
-                {hasError && (
-                    <>
-                        <Snackbar
-                            open={isSnackbarOpen}
-                            autoHideDuration={4000}
-                            onClose={() => setIsSnackbarOpen(false)}
-                        >
-                            <Box sx={{ width: '100%' }}>
-                                <Alert severity="error">{hasError}</Alert>
-                            </Box>
-                        </Snackbar>
-                    </>
-                )}
+                {
+                    hasError && (
+                        <SnackbarAlert 
+                            isSnackbarOpen={ isSnackbarOpen }
+                            handleToggleSnackbar={ handleToggleSnackbar }
+                            message={ snackbarMessage }
+                            type='error'
+                        />
+                    )
+                }
 
-                {isSuccessful && (
-                    <Snackbar
-                        open={isSnackbarOpen}
-                        autoHideDuration={4000}
-                        onClose={() => setIsSnackbarOpen(false)}
-                    >
-                        <Box sx={{ width: '100%' }}>
-                            <Alert severity="success">
-                                Group created successfully
-                            </Alert>
-                        </Box>
-                    </Snackbar>
-                )}
+                {
+                    isSuccessful && (
+                        <SnackbarAlert 
+                            isSnackbarOpen={ isSnackbarOpen }
+                            handleToggleSnackbar={ handleToggleSnackbar }
+                            message={ snackbarMessage }
+                            type='success'
+                        />
+                    )
+                }
 
                 <Divider variant="middle" />
 
@@ -239,7 +160,16 @@ export const GroupsPage = () => {
 
                     <TableData 
                         columns={[ 'Name', 'Status', 'Actions' ]}
-                        data={ groups }
+                        data={ items }
+                        dataLength={ total }
+                        type='state'
+                        fetchStatus={ fetchStatus }
+                        handleDelete={ handleDeleteGroup }
+                        handleUpdate={ handleUpdateGroup }
+                        page={ page }
+                        rowsPerPage={ rowsPerPage }
+                        handleChangePage={ handleChangePage }
+                        handleChangeRowsPerPage={ handleChangeRowsPerPage }
                     />
                 </Box>
             </Box>

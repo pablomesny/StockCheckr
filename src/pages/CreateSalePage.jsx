@@ -16,7 +16,7 @@ export const CreateSalePage = () => {
     setDate( `${ dateString } ${ timeString }` );
   }, []);
   
-  const onInputChange = ({ target }) => {
+  const handleInputChange = ({ target }) => {
     const { name, value } = target;
     setFormData({
       ...formData,
@@ -94,7 +94,7 @@ export const CreateSalePage = () => {
             label="Customer name"
             name="customerName"
             value={ customerName }
-            onChange={ onInputChange }
+            onChange={ handleInputChange }
           />
 
           <TextField 
@@ -104,7 +104,7 @@ export const CreateSalePage = () => {
             label="Phone number"
             name="customerPhoneNumber"
             value={ customerPhoneNumber }
-            onChange={ onInputChange }
+            onChange={ handleInputChange }
           />
         </Box>
         
