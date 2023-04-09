@@ -10,7 +10,7 @@ import { TableRowList } from './TableRowList';
 // Columns received as params will be the headers of the table. They should be passed as an array.
 // Data received as params will be part the body of the table. They should be passed as object.
 
-export const TableData = ({ columns = [], data, type = '', fetchStatus, handleDelete, handleUpdate, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
+export const TableData = ({ columns = [], data, dataLength, type = '', fetchStatus, handleDelete, handleUpdate, page, rowsPerPage, handleChangePage, handleChangeRowsPerPage }) => {
   return (
     <Box sx={{ mx: 2, mt: 2 }}>
       <TableContainer component={Paper}>
@@ -28,7 +28,7 @@ export const TableData = ({ columns = [], data, type = '', fetchStatus, handleDe
       <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={ data.length }
+          count={ dataLength }
           rowsPerPage={ rowsPerPage }
           page={ page }
           onPageChange={handleChangePage}

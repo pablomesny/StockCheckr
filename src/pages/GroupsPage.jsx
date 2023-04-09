@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
-import { StocksContext } from '../context';
+import { GroupsContext } from '../context';
 import { SnackbarAlert } from '../components/SnackbarAlert';
 import { useFetchGroups } from '../hooks/useFetchGroups';
 import { useTablePages } from '../hooks';
@@ -20,10 +20,10 @@ export const GroupsPage = () => {
     
     const [ isModalOpen, setIsModalOpen ] = useState(false);
 
-    const { stocks } = useContext(StocksContext);
+    const { groups } = useContext(GroupsContext);
 
     const { isLoading, hasError, isSuccessful } = fetchStatus;
-    const { groups } = stocks;
+    const { items, total } = groups;
 
     const handleToggleModal = () => {
         setIsModalOpen(prev => !prev);
@@ -160,7 +160,8 @@ export const GroupsPage = () => {
 
                     <TableData 
                         columns={[ 'Name', 'Status', 'Actions' ]}
-                        data={ groups }
+                        data={ items }
+                        dataLength={ total }
                         type='state'
                         fetchStatus={ fetchStatus }
                         handleDelete={ handleDeleteGroup }

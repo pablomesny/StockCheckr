@@ -6,7 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import { NavbarDrawer } from "./NavbarDrawer";
 import { TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { StocksContext } from "../context";
+import { GroupsContext } from "../context";
 
 export const Navbar = () => {
 
@@ -14,7 +14,7 @@ export const Navbar = () => {
   const [ isModalOpen, setIsModalOpen ] = useState( false );
   
   const { onLogout } = useContext( AuthContext );
-  const { handleResetStocks } = useContext( StocksContext );
+  const { handleResetStocks } = useContext( GroupsContext );
 
   const handleToggleDrawer = () => {
     setIsOpen( prev => !prev );

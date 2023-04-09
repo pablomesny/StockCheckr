@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext, StocksContext } from "../context";
+import { AuthContext, GroupsContext } from "../context";
 import { useFetchStatus } from "./useFetchStatus";
 import { ENDPOINT, TOKEN_LOCALSTORAGE } from "../utils";
 
@@ -8,57 +8,45 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
     const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
     const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
 
-    const { stocks, handleAddGroup, handleSetGroups, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( StocksContext );
+    const { handleAddGroup, handleSetGroups, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( GroupsContext );
     const { auth } = useContext( AuthContext );
 
     const { fetchStatus, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetchStatus();
 
-    const { groups } = stocks;
-
-    console.log({page});
-    console.log({rowsPerPage});
-
-    console.log(groups);
-
-
     useEffect(() => {
-        const controller = new AbortController();
-
         const limit = ( page * rowsPerPage ) + rowsPerPage;
         const from = ( page * rowsPerPage );
+        
+        const controller = new AbortController();
 
-        console.log(limit, from);
+        const { signal } = controller;
 
-        if (groups.length === 0) {
-            const { signal } = controller;
+        handleStartFetching();
 
-            handleStartFetching();
-
-            fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=${ limit }&from=${ from }`, { signal })
-                .then(res => res.json())
-                .then(res => {
-                    if (!res.ok || res.errors) {
-                        const error = res.msg || res.errors[0].msg;
-                        handleHasError(error);
-                        handleOpenSnackbar();
-                        return;
-                    }
-                    const groups = res.groups.map( group => {
-                                                    const { created_by, ...rest } = group;
-                                                    return rest;
-                                                });
-                    handleSetGroups(groups);
-                })
-                .catch(err => {
-                    console.log(err);
-                    handleHasError( String(err) );
-                    setSnackbarMessage( 'Error while downloading groups data' );
+        fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=${ limit }&from=${ from }`, { signal })
+            .then(res => res.json())
+            .then(res => {
+                if (!res.ok || res.errors) {
+                    const error = res.msg || res.errors[0].msg;
+                    handleHasError(error);
                     handleOpenSnackbar();
-                })
-                .finally(() => {
-                    handleIsLoading(false);
-                });
-        }
+                    return;
+                }
+                const groups = res.groups.map( group => {
+                                                const { created_by, ...rest } = group;
+                                                return rest;
+                                            });
+                handleSetGroups( groups, res.total );
+            })
+            .catch(err => {
+                console.log(err);
+                handleHasError( String(err) );
+                setSnackbarMessage( 'Error while downloading groups data' );
+                handleOpenSnackbar();
+            })
+            .finally(() => {
+                handleIsLoading(false);
+            });
 
         return () => controller.abort();
     }, [ page, rowsPerPage ]);

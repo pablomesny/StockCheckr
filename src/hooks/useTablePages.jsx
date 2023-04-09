@@ -9,8 +9,9 @@ export const useTablePages = () => {
   });
 
   const handleChangeRowsPerPage = useCallback(e => {
-    const updatedRowsPerPage = parseInt(e.target.value);
-    setRowsPerPage(updatedRowsPerPage);
+    const updatedRowsPerPage = parseInt( e.target.value );
+    setPage( 0 );
+    setRowsPerPage( updatedRowsPerPage );
   });
 
   return {

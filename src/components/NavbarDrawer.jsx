@@ -3,13 +3,13 @@ import { Link } from "react-router-dom";
 import { Box, Collapse, Container, Divider, Drawer, IconButton, List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import { AttachMoneyRounded, CloseRounded, ContentCopyRounded, ControlPointRounded, ExpandLessRounded, ExpandMoreRounded, FormatListBulletedRounded, StarBorder, TurnedInRounded, WorkspacesRounded } from "@mui/icons-material";
 import { ConfirmationModal } from "./ConfirmationModal";
-import { AuthContext, StocksContext } from "../context";
+import { AuthContext, GroupsContext } from "../context";
 import { TOKEN_LOCALSTORAGE, USER_LOCALSTORAGE } from "../utils";
 
 export const NavbarDrawer = ({ isOpen, handleToggleDrawer }) => {
 
   const { onLogout } = useContext( AuthContext );
-  const { handleResetStocks } = useContext( StocksContext );
+  const { handleResetStocks } = useContext( GroupsContext );
 
   const [ isModalOpen, setIsModalOpen ] = useState( false );
   const [ isControlPanelOpen, setIsControlPanelOpen ] = useState( false );
