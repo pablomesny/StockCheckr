@@ -1,23 +1,20 @@
 import { useEffect, useState } from "react";
 import { Box, Grid } from "@mui/material";
 import { FullScreenLogo, LoginForm, RegisterForm } from "../components";
+import { useLocation } from "react-router-dom";
 
 export const LoginPage = () => {
 
   const [ bigLogo, setBigLogo ] = useState( true );
-
-  const [ isUserRegistered, setIsUserRegistered ] = useState( true );
-
+  
+  const location = useLocation();
+  const path = location.pathname.split('/').slice(-1).join();
+  
   useEffect(() => {
     setTimeout(() => {
       setBigLogo( false );
     }, 2500);
   }, []);
-  
-
-  const handleChangeForm = () => {
-    setIsUserRegistered( prev => !prev );
-  }
 
   return (
     <>
@@ -34,11 +31,11 @@ export const LoginPage = () => {
                 </Grid>
 
                 {
-                  isUserRegistered
+                  path === 'login'
 
-                    ? <LoginForm handleChangeForm={ handleChangeForm } />
+                    ? <LoginForm />
 
-                    : <RegisterForm handleChangeForm={ handleChangeForm } />
+                    : <RegisterForm />
                 }
                 
               </Grid>
