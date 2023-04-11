@@ -8,8 +8,8 @@ const initialValues = {
 }
 
 export const GroupsProvider = ({ children }) => {
-
-    const [ groups, setGroups ] = useState( initialValues );
+  
+  const [ groups, setGroups ] = useState( initialValues );
 
     const handleSetGroups = ( groups, total ) => {
       setGroups({
@@ -18,7 +18,7 @@ export const GroupsProvider = ({ children }) => {
       })
     }
 
-    const handleAddGroup = ( group ) => {
+    /* const handleAddGroup = ( group ) => {
       setGroups( prev => ({
         total: prev.total + 1,
         items: [
@@ -26,18 +26,15 @@ export const GroupsProvider = ({ children }) => {
           group
         ]
       }))
-    }
+    } */
     
     const handleDeleteGroup = ( id ) => {
-
-      const itemsLeft = groups.items.filter( group => group.id !== id );
-
-      setGroups({
-        total: itemsLeft.length,
+      setGroups( prev => ({
+        total: prev.total - 1,
         items: [
-          groups.items.filter( group => group.id !== id )
+          prev.items.filter( group => group.id !== id )
         ]
-      })
+      }))
     }
 
     const handleUpdateGroup = ( group ) => {
@@ -62,7 +59,7 @@ export const GroupsProvider = ({ children }) => {
     const value = {
       groups,
       handleSetGroups,
-      handleAddGroup,
+      // handleAddGroup,
       handleResetGroups,
       handleDeleteGroup,
       handleUpdateGroup

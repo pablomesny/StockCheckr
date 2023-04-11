@@ -8,7 +8,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
     const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
     const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
 
-    const { handleAddGroup, handleSetGroups, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( GroupsContext );
+    const { handleSetGroups, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( GroupsContext );
     const { auth } = useContext( AuthContext );
 
     const { fetchStatus, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetchStatus();
@@ -75,7 +75,6 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
                     setIsSnackbarOpen(true);
                     return;
                 }
-                handleAddGroup(res.group);
                 handleIsSuccessful( true );
                 setSnackbarMessage( 'Group created successfully' );
                 setIsSnackbarOpen(true);
