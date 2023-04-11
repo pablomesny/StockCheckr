@@ -1,15 +1,31 @@
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
-import { useTablePages } from '../hooks';
+import { useFetchBrands, useTablePages } from '../hooks';
+import { BrandsContext } from '../context';
+import { SnackbarAlert } from '../components/SnackbarAlert';
 
 export const BrandsPage = () => {
-  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = useTablePages();
+  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } =
+    useTablePages();
 
-  
-  
+  const {
+    fetchStatus,
+    isSnackbarOpen,
+    snackbarMessage,
+    handleCreateBrand,
+    handleDeleteBrand,
+    handleUpdateBrand,
+    handleToggleSnackbar
+  } = useFetchBrands(page, rowsPerPage);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { brands } = useContext(BrandsContext);
+
+  const { isLoading, hasError, isSuccessful } = fetchStatus;
+  const { items, total } = brands;
 
   const handleToggleModal = () => {
     setIsModalOpen(prev => !prev);
@@ -51,9 +67,10 @@ export const BrandsPage = () => {
             onClick={handleToggleModal}
             variant="contained"
             color="primary"
+            disabled={ isLoading }
             sx={{ display: 'flex', ml: 'auto', mr: 2 }}
           >
-            Add brand
+            { isLoading ? 'Loading...' : 'Add brand' }
           </Button>
         </Box>
 
@@ -73,63 +90,63 @@ export const BrandsPage = () => {
         >
           <Box
             sx={{
+              alignSelf: 'flex-end',
+              m: 2,
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              margin: 2
+              alignItems: 'center',
+              gap: 1
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 1
-              }}
-            >
-              <Typography component="p" sx={{ fontSize: '1rem' }}>
-                Show
-              </Typography>
+            <Typography component="p" sx={{ fontSize: '1rem' }}>
+              Search:
+            </Typography>
 
-              <TextField
-                style={{ width: 100 }}
-                size="small"
-                type="number"
-                defaultValue={10}
-              />
-
-              <Typography component="p" sx={{ fontSize: '1rem' }}>
-                entries
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 1
-              }}
-            >
-              <Typography component="p" sx={{ fontSize: '1rem' }}>
-                Search:
-              </Typography>
-
-              <TextField size="small" type="text" />
-            </Box>
+            <TextField size="small" type="text" />
           </Box>
 
           <Divider variant="middle" />
 
-          {/* <TableData /> */}
+          <TableData 
+            columns={[ 'Name', 'Status', 'Actions' ]}
+            data={ items }
+            dataLength={ total }
+            type="state"
+            fetchStatus={ fetchStatus }
+            handleDelete={ handleDeleteBrand }
+            handleUpdate={ handleUpdateBrand }
+            page={ page }
+            rowsPerPage={ rowsPerPage }
+            handleChangePage={ handleChangePage }
+            handleChangeRowsPerPage={ handleChangeRowsPerPage }
+          />
         </Box>
       </Box>
+
+      {hasError && (
+        <SnackbarAlert
+          isSnackbarOpen={isSnackbarOpen}
+          handleToggleSnackbar={handleToggleSnackbar}
+          message={snackbarMessage}
+          type="error"
+        />
+      )}
+
+      {isSuccessful && (
+        <SnackbarAlert
+          isSnackbarOpen={isSnackbarOpen}
+          handleToggleSnackbar={handleToggleSnackbar}
+          message={snackbarMessage}
+          type="success"
+        />
+      )}
 
       <Modal
         isOpen={isModalOpen}
         handleToggleModal={handleToggleModal}
         title="Add brand"
         inputLabel="Brand"
+        onSubmit={ handleCreateBrand }
       />
     </>
   );

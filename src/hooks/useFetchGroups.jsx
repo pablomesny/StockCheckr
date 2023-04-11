@@ -8,7 +8,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
     const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
     const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
 
-    const { handleSetGroups, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( GroupsContext );
+    const { handleSetGroups, handleAddGroup, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( GroupsContext );
     const { auth } = useContext( AuthContext );
 
     const { fetchStatus, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetchStatus();
@@ -16,9 +16,6 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
     useEffect(() => {
         const limit = rowsPerPage;
         const from = ( page * rowsPerPage );
-
-        console.log({limit});
-        console.log({from});
         
         const controller = new AbortController();
 
@@ -62,7 +59,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-token': localStorage.getItem('x-token')
+                'x-token': localStorage.getItem( TOKEN_LOCALSTORAGE )
             },
             body: JSON.stringify({ name })
         })
@@ -75,6 +72,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
                     setIsSnackbarOpen(true);
                     return;
                 }
+                handleAddGroup( res.group );
                 handleIsSuccessful( true );
                 setSnackbarMessage( 'Group created successfully' );
                 setIsSnackbarOpen(true);
@@ -132,9 +130,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
 
         const { name } = body;
 
-        handleIsLoading( true );
-        handleHasError( null );
-        handleIsSuccessful( false );
+        handleStartFetching();
 
         fetch( `${ ENDPOINT }/api/groups/${ id }`, {
             method: 'PUT',

@@ -1,6 +1,6 @@
 import { createContext, useState } from "react"
 
-const BrandsContext = createContext();
+export const BrandsContext = createContext();
 
 const initialValues = {
     total: 0,
@@ -16,6 +16,16 @@ export const BrandsProvider = ({ children }) => {
             total,
             items: brands
         })
+    }
+
+    const handleAddBrand = ( brand ) => {
+        setBrands( prev => ({
+            total: prev.total + 1,
+            items: [
+                ...prev.items,
+                brand
+            ]
+        }))
     }
 
     const handleDeleteBrand = ( id ) => {
@@ -49,6 +59,7 @@ export const BrandsProvider = ({ children }) => {
     const value = {
         brands,
         handleSetBrands,
+        handleAddBrand,
         handleResetBrands,
         handleDeleteBrand,
         handleUpdateBrand

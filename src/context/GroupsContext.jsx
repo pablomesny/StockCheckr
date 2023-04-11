@@ -18,7 +18,7 @@ export const GroupsProvider = ({ children }) => {
       })
     }
 
-    /* const handleAddGroup = ( group ) => {
+    const handleAddGroup = ( group ) => {
       setGroups( prev => ({
         total: prev.total + 1,
         items: [
@@ -26,7 +26,7 @@ export const GroupsProvider = ({ children }) => {
           group
         ]
       }))
-    } */
+    }
     
     const handleDeleteGroup = ( id ) => {
       setGroups( prev => ({
@@ -59,7 +59,7 @@ export const GroupsProvider = ({ children }) => {
     const value = {
       groups,
       handleSetGroups,
-      // handleAddGroup,
+      handleAddGroup,
       handleResetGroups,
       handleDeleteGroup,
       handleUpdateGroup

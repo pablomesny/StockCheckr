@@ -91,7 +91,7 @@ export const GroupsPage = () => {
           <Box
             sx={{
               alignSelf: 'flex-end',
-              margin: 2,
+              m: 2,
               display: 'flex',
               flexDirection: 'row',
               alignItems: 'center',
