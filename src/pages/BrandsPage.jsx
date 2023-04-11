@@ -2,12 +2,17 @@ import { useState } from 'react';
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
 import { Modal } from '../components';
 import { TableData } from '../components/TableData';
+import { useTablePages } from '../hooks';
 
 export const BrandsPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
+  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = useTablePages();
+
+  
+  
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleToggleModal = () => {
-    setIsOpen(prev => !prev);
+    setIsModalOpen(prev => !prev);
   };
 
   return (
@@ -121,7 +126,7 @@ export const BrandsPage = () => {
       </Box>
 
       <Modal
-        isOpen={isOpen}
+        isOpen={isModalOpen}
         handleToggleModal={handleToggleModal}
         title="Add brand"
         inputLabel="Brand"
