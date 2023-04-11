@@ -14,8 +14,11 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
     const { fetchStatus, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetchStatus();
 
     useEffect(() => {
-        const limit = ( page * rowsPerPage ) + rowsPerPage;
+        const limit = rowsPerPage;
         const from = ( page * rowsPerPage );
+
+        console.log({limit});
+        console.log({from});
         
         const controller = new AbortController();
 
