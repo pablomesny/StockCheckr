@@ -1,13 +1,17 @@
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Modal } from '../components';
+import { useTablePages } from '../hooks';
 import { TableData } from '../components/TableData';
 
 export const CategoriesPage = () => {
-  const [isOpen, setIsOpen] = useState(false);
+
+  const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = useTablePages();
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleToggleModal = () => {
-    setIsOpen(prev => !prev);
+    setIsModalOpen(prev => !prev);
   };
 
   return (
@@ -90,7 +94,7 @@ export const CategoriesPage = () => {
       </Box>
 
       <Modal
-        isOpen={isOpen}
+        isOpen={isModalOpen}
         handleToggleModal={handleToggleModal}
         title="Add category"
         inputLabel="Category"
