@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, MenuItem, Select, TextField, Typography } from "@mui/material";
+import { useForm } from '../hooks';
+
+const initialValues = {
+  customerName: '',
+  customerPhoneNumber: '',
+  product: '',
+  quantity: 1,
+  price: ''
+};
 
 export const CreateSalePage = () => {
 
   const [ date, setDate ] = useState( null );
-  const [ formData, setFormData ] = useState({
-    customerName: '',
-    customerPhoneNumber: '',
-  });
+  const { formData, handleInputChange } = useForm( initialValues );
 
   useEffect(() => {
     const currentDate = new Date();
@@ -16,15 +22,7 @@ export const CreateSalePage = () => {
     setDate( `${ dateString } ${ timeString }` );
   }, []);
   
-  const handleInputChange = ({ target }) => {
-    const { name, value } = target;
-    setFormData({
-      ...formData,
-      [ name ]: value
-    })
-  }
-
-  const { customerName, customerPhoneNumber } = formData;
+  const { customerName, customerPhoneNumber, product, quantity, price } = formData;
 
   return (
     <Box
@@ -105,6 +103,63 @@ export const CreateSalePage = () => {
             name="customerPhoneNumber"
             value={ customerPhoneNumber }
             onChange={ handleInputChange }
+          />
+        </Box>
+
+        <Box sx={{ display: 'flex', mt: 3, width: '90%', alignSelf: 'center', flexDirection: 'row', gap: 3 }}>
+
+          <Select
+            name='product'
+            value={ product }
+            size='small'
+            label='product'
+            variant='outlined'
+            fullWidth
+            onChange={ handleInputChange }
+          >
+            <MenuItem value={ 'test' }>Test</MenuItem>
+          </Select>
+
+          <TextField 
+            name='quantity'
+            type='number'
+            value={ quantity }
+            size='small'
+            label='Quantity'
+            onChange={ handleInputChange }
+          />
+
+          <TextField 
+            name='price'
+            type='number'
+            value={ price }
+            size='small'
+            label='Price'
+            onChange={ handleInputChange }
+          />
+
+          <TextField 
+            name='subtotal'
+            type='number'
+            value={ price * quantity }
+            size='small'
+            label='Subtotal'
+          />
+
+        </Box>
+
+        <Box sx={{ display: 'flex', flexDirection: 'column', width: '90%', alignSelf: 'center', alignItems: 'flex-end', mt: 3 }}>
+          <Button sx={{ width: 'content-fit', ml: 'auto', bgcolor: '#0B3C5D', color: '#FFF' }}>
+            +
+          </Button>
+
+          <TextField 
+            sx={{ mt: 2 }}
+            name='total'
+            type='number'
+            value={ price * quantity }
+            size='small'
+            label='Total'
           />
         </Box>
         

@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 const initialValues = {
   id: null,
-  status: 'not authenticated',
+  status: 'authenticated',
   username: '',
   email: ''
 };
