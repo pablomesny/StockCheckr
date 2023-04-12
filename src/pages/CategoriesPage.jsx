@@ -1,8 +1,10 @@
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { Modal } from '../components';
 import { useFetchCategories, useTablePages } from '../hooks';
 import { TableData } from '../components/TableData';
+import { CategoriesContext } from '../context';
+import { SnackbarAlert } from '../components/SnackbarAlert';
 
 export const CategoriesPage = () => {
 
@@ -10,6 +12,11 @@ export const CategoriesPage = () => {
   const { fetchStatus, isSnackbarOpen, snackbarMessage, handleCreateCategory, handleDeleteCategory, handleUpdateCategory, handleToggleSnackbar } = useFetchCategories( page, rowsPerPage );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const { categories } = useContext( CategoriesContext );
+
+  const { isLoading, hasError, isSuccessful } = fetchStatus;
+  const { items, total } = categories;
 
   const handleToggleModal = () => {
     setIsModalOpen(prev => !prev);
@@ -90,15 +97,46 @@ export const CategoriesPage = () => {
 
           <Divider variant="middle" />
 
-          {/* <TableData /> */}
+          <TableData 
+            columns={[ 'Name', 'Status', 'Actions' ]}
+            data={ items }
+            dataLength={ total }
+            type='state'
+            fetchStatus={ fetchStatus }
+            handleDelete={ handleDeleteCategory }
+            handleUpdate={ handleUpdateCategory }
+            page={ page }
+            rowsPerPage={ rowsPerPage }
+            handleChangePage={ handleChangePage }
+            handleChangeRowsPerPage={ handleChangeRowsPerPage }
+          />
         </Box>
       </Box>
+
+      {hasError && (
+        <SnackbarAlert
+          isSnackbarOpen={isSnackbarOpen}
+          handleToggleSnackbar={handleToggleSnackbar}
+          message={snackbarMessage}
+          type="error"
+        />
+      )}
+
+      {isSuccessful && (
+        <SnackbarAlert
+          isSnackbarOpen={isSnackbarOpen}
+          handleToggleSnackbar={handleToggleSnackbar}
+          message={snackbarMessage}
+          type="success"
+        />
+      )}
 
       <Modal
         isOpen={isModalOpen}
         handleToggleModal={handleToggleModal}
         title="Add category"
         inputLabel="Category"
+        onSubmit={ handleCreateCategory }
       />
     </>
   );
