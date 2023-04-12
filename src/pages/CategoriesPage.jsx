@@ -1,12 +1,13 @@
 import { Box, Button, Divider, TextField, Typography } from '@mui/material';
 import { useState } from 'react';
 import { Modal } from '../components';
-import { useTablePages } from '../hooks';
+import { useFetchCategories, useTablePages } from '../hooks';
 import { TableData } from '../components/TableData';
 
 export const CategoriesPage = () => {
 
   const { page, rowsPerPage, handleChangePage, handleChangeRowsPerPage } = useTablePages();
+  const { fetchStatus, isSnackbarOpen, snackbarMessage, handleCreateCategory, handleDeleteCategory, handleUpdateCategory, handleToggleSnackbar } = useFetchCategories( page, rowsPerPage );
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

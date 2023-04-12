@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react"
 import { AuthContext, CategoriesContext } from "../context";
 import { useFetchStatus } from "./useFetchStatus";
-import { TOKEN_LOCALSTORAGE } from "../utils";
+import { ENDPOINT, TOKEN_LOCALSTORAGE } from "../utils";
 
 export const useFetchCategories = ( page, rowsPerPage ) => {
 
