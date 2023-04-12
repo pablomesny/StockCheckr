@@ -69,13 +69,13 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
                     const error = res.msg || res.errors[0].msg;
                     handleHasError(error);
                     setSnackbarMessage( error );
-                    setIsSnackbarOpen(true);
+                    handleOpenSnackbar();
                     return;
                 }
                 handleAddGroup( res.group );
                 handleIsSuccessful( true );
                 setSnackbarMessage( 'Group created successfully' );
-                setIsSnackbarOpen(true);
+                handleOpenSnackbar();
             })
             .catch(err => {
                 handleHasError(err);
@@ -112,7 +112,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
 
                 handleDeleteGroupFromContext( id );
                 handleIsSuccessful( true );
-                setSnackbarMessage( `Group ${ name } deleted successfully` );
+                setSnackbarMessage( `Group "${ name }" deleted successfully` );
                 handleOpenSnackbar();
             })
             .catch( err => {

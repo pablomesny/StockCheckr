@@ -151,7 +151,7 @@ export const useFetchBrands = ( page, rowsPerPage ) => {
                 }
                 handleUpdateBrandFromContext( body );
                 handleIsSuccessful( true );
-                setSnackbarMessage( `Brand "${ name }" successfully updated` );
+                setSnackbarMessage( `Brand "${ name }" updated successfully` );
                 handleOpenSnackbar();
             })
             .catch( err => {
