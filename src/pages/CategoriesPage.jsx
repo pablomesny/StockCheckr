@@ -68,26 +68,19 @@ export const CategoriesPage = () => {
         >
           <Box
             sx={{
+              alignSelf: 'flex-end',
+              m: 2,
               display: 'flex',
               flexDirection: 'row',
-              justifyContent: 'space-between',
-              margin: 2
+              alignItems: 'center',
+              gap: 1
             }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                alignItems: 'center',
-                gap: 1
-              }}
-            >
               <Typography component="p" sx={{ fontSize: '1rem' }}>
                 Search:
               </Typography>
 
               <TextField size="small" type="text" />
-            </Box>
           </Box>
 
           <Divider variant="middle" />
