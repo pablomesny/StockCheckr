@@ -5,7 +5,7 @@ export const AuthContext = createContext();
 
 const initialValues = {
   id: null,
-  status: 'authenticated',
+  status: 'not authenticated',
   username: '',
   email: ''
 };
@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const onLogout = () => {
-    setAuth( () => prevValues() );
+    setAuth( initialValues );
   };
 
   const value = {

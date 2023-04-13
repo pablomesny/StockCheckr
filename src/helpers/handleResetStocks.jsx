@@ -1,15 +1,16 @@
-import { useContext } from "react";
-import { GroupsContext } from "../context";
+import { useContext } from 'react';
+import { AuthContext, GroupsContext } from '../context';
 
 export const handleResetStocks = () => {
+  const { onLogout } = useContext(AuthContext);
+  const { handleResetGroups } = useContext(GroupsContext);
 
-    const { handleResetGroups } = useContext( GroupsContext );
-
-    const handleResetStocks = () => {
-        handleResetGroups();
-    }
+  const handleResetStocks = () => {
+    onLogout();
+    handleResetGroups();
+  };
 
   return {
     handleResetStocks
-  }
-}
+  };
+};
