@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const onLogout = () => {
-    setAuth( () => prevValues() );
+    setAuth( initialValues );
   };
 
   const value = {

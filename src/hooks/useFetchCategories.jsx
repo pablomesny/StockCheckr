@@ -1,61 +1,61 @@
-import { useContext, useEffect, useState } from "react";
-import { AuthContext, GroupsContext } from "../context";
+import { useContext, useEffect, useState } from "react"
+import { AuthContext, CategoriesContext } from "../context";
 import { useFetchStatus } from "./useFetchStatus";
 import { ENDPOINT, TOKEN_LOCALSTORAGE } from "../utils";
 
-export const useFetchGroups = ( page, rowsPerPage ) => {
+export const useFetchCategories = ( page, rowsPerPage ) => {
 
-    const [ isSnackbarOpen, setIsSnackbarOpen ] = useState(false);
+    const [ isSnackbarOpen, setIsSnackbarOpen ] = useState( false );
     const [ snackbarMessage, setSnackbarMessage ] = useState( '' );
 
-    const { handleSetGroups, handleAddGroup, handleDeleteGroup: handleDeleteGroupFromContext, handleUpdateGroup: handleUpdateGroupFromContext } = useContext( GroupsContext );
+    const { handleSetCategories, handleAddCategory, handleDeleteCategory: handleDeleteCategoryFromContext, handleUpdateCategory: handleUpdateCategoryFromContext } = useContext( CategoriesContext );
     const { auth } = useContext( AuthContext );
 
     const { fetchStatus, handleIsLoading, handleHasError, handleIsSuccessful, handleStartFetching } = useFetchStatus();
 
-    useEffect(() => {
+    useEffect( () => {
         const limit = rowsPerPage;
         const from = ( page * rowsPerPage );
-        
-        const controller = new AbortController();
 
+        const controller = new AbortController();
         const { signal } = controller;
 
         handleStartFetching();
 
-        fetch(`${ENDPOINT}/api/groups/${ auth.id }/?limit=${ limit }&from=${ from }`, { signal })
-            .then(res => res.json())
-            .then(res => {
-                if (!res.ok || res.errors) {
+        fetch( `${ ENDPOINT }/api/categories/${ auth.id }/?limit=${ limit }&from=${ from }`, { signal } )
+            .then( res => res.json() )
+            .then( res => {
+                if( !res.ok || res.errors ) {
                     const error = res.msg || res.errors[0].msg;
-                    handleHasError(error);
+                    handleHasError( error );
                     handleOpenSnackbar();
                     return;
                 }
-                const groups = res.groups.map( group => {
-                                                const { created_by, ...rest } = group;
-                                                return rest;
-                                            });
-                handleSetGroups( groups, res.total );
+                const categories = res.categories.map( category => {
+                    const { created_by, ...rest } = category;
+
+                    return rest;
+                })
+                handleSetCategories( categories, res.total );
             })
-            .catch(err => {
+            .catch( err => {
                 console.log(err);
                 handleHasError( String(err) );
-                setSnackbarMessage( 'Error while downloading groups data' );
+                setSnackbarMessage( 'Error while downloading categories data' );
                 handleOpenSnackbar();
             })
-            .finally(() => {
-                handleIsLoading(false);
-            });
+            .finally( () => {
+                handleIsLoading( false );
+            })
 
-        return () => controller.abort();
+            return () => controller.abort();
     }, [ page, rowsPerPage ]);
 
-    const handleCreateGroup = ( name ) => {
-        
+    const handleCreateCategory = ( name ) =>{
+
         handleStartFetching();
 
-        fetch(`${ENDPOINT}/api/groups`, {
+        fetch( `${ ENDPOINT }/api/categories`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,37 +63,38 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
             },
             body: JSON.stringify({ name })
         })
-            .then(res => res.json())
-            .then(res => {
-                if (!res.ok || res.errors) {
+            .then( res => res.json() )
+            .then( res => {
+                if( !res.ok || res.errors ) {
                     const error = res.msg || res.errors[0].msg;
-                    handleHasError(error);
+
+                    handleHasError( error );
                     setSnackbarMessage( error );
                     handleOpenSnackbar();
                     return;
                 }
-                handleAddGroup( res.group );
+                handleAddCategory( res.category );
                 handleIsSuccessful( true );
-                setSnackbarMessage( 'Group created successfully' );
+                setSnackbarMessage( 'Category created successfully' );
                 handleOpenSnackbar();
             })
-            .catch(err => {
-                handleHasError(err);
-                setSnackbarMessage( 'Error while creating group' );
+            .catch( err => {
+                console.log(err);
+                handleHasError( err );
+                setSnackbarMessage( 'Error while creating category' );
                 handleOpenSnackbar();
             })
-            .finally(() => {
-                handleIsLoading(false);
-            });
+            .finally( () => {
+                handleIsLoading( false );
+            })
     };
 
-    const handleDeleteGroup = ( id, body ) => {
-
+    const handleDeleteCategory = ( id, body ) => {
         const { name } = body;
 
         handleStartFetching();
 
-        fetch( `${ ENDPOINT }/api/groups/${ id }`, {
+        fetch( `${ ENDPOINT }/api/categories/${ id }`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -109,16 +110,15 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
                     handleOpenSnackbar();
                     return;
                 }
-
-                handleDeleteGroupFromContext( id );
+                handleDeleteCategoryFromContext( id );
                 handleIsSuccessful( true );
                 setSnackbarMessage( `Group "${ name }" deleted successfully` );
                 handleOpenSnackbar();
             })
             .catch( err => {
-                console.log(err);
+                console.log( err );
                 handleHasError( err );
-                setSnackbarMessage( `Error deleting group "${ name }"` )
+                setSnackbarMessage( `Error deleting category "${ name }"` );
                 handleOpenSnackbar();
             })
             .finally( () => {
@@ -126,13 +126,13 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
             })
     }
 
-    const handleUpdateGroup = ( id, body, resetBody ) => {
-
+    const handleUpdateCategory = ( id, body, resetBody ) => {
+        
         const { name } = body;
 
         handleStartFetching();
 
-        fetch( `${ ENDPOINT }/api/groups/${ id }`, {
+        fetch( `${ ENDPOINT }/api/categories/${ id }`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -142,7 +142,7 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
         })
             .then( res => res.json() )
             .then( res => {
-                if( !res.ok || res.errors ){
+                if( !res.ok || res.errors ) {
                     const error = res.msg || res.errors[0].msg;
                     handleHasError( error );
                     setSnackbarMessage( error );
@@ -150,21 +150,20 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
                     resetBody();
                     return;
                 }
-
-                handleUpdateGroupFromContext( body );
+                handleUpdateCategoryFromContext( body );
                 handleIsSuccessful( true );
-                setSnackbarMessage( `Group "${ name }" successfully updated` );
+                setSnackbarMessage( `Category "${ name }" updated successfully` );
                 handleOpenSnackbar();
             })
             .catch( err => {
                 console.log(err);
                 handleHasError( err );
-                setSnackbarMessage( `Error updating group "${ name }"` )
+                setSnackbarMessage( `Error updating category "${ name}"` );
                 handleOpenSnackbar();
                 resetBody();
             })
             .finally( () => {
-                handleIsLoading( false )
+                handleIsLoading( false );
             })
     }
 
@@ -180,9 +179,9 @@ export const useFetchGroups = ( page, rowsPerPage ) => {
     fetchStatus,
     isSnackbarOpen,
     snackbarMessage,
-    handleCreateGroup,
-    handleDeleteGroup,
-    handleUpdateGroup,
+    handleCreateCategory,
+    handleDeleteCategory,
+    handleUpdateCategory,
     handleOpenSnackbar,
     handleToggleSnackbar
   }
